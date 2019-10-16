@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ProyectoEmergentes</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_places">Lugares</string>
+    <string name="title_favoritos">Favoritos</string>
+    <string name="title_usuario">Perfil</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
