@@ -8,4 +8,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name ="url_server">http://yurtaaplication.000webhostapp.com/</string>
+    <string name="title_popular_place">Popular</string>
+    <string name="perfil_option_settings">Ajustes</string>
+    <string name="perfil_option_help">Ajustes</string>
+    <string name="perfil_option_donate">Ajustes</string>
+    <string name="perfil_option_about">Ajustes</string>
+    <string name="perfil_option_logout">Ajustes</string>
 </resources>
