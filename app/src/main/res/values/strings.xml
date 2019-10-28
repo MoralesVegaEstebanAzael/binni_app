@@ -1,18 +1,31 @@
 <resources>
-    <string name="app_name">ProyectoEmergentes</string>
-    <string name="title_activity_main2">MainActivity</string>
+    <string name="app_name">Binni App</string>
+    <string name="title_activity_main2">Binni App</string>
     <string name="title_home">Home</string>
     <string name="title_places">Lugares</string>
     <string name="title_favoritos">Favoritos</string>
     <string name="title_usuario">Perfil</string>
+    <!-- URL API -->
+    <string name="url_api_lugares_categoria">http://sistema-turismo.herokuapp.com/api/lugares/</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name ="url_server">http://yurtaaplication.000webhostapp.com/</string>
-    <string name="title_popular_place">Popular</string>
+    <string name="title_popular_place">Populares</string>
+    <string name="categoria_museos">Museos</string>
+    <string name="categoria_templos">Templos y Exconventos</string>
+    <string name="categoria_mercados">Mercados</string>
+
     <string name="perfil_option_settings">Ajustes</string>
-    <string name="perfil_option_help">Ajustes</string>
-    <string name="perfil_option_donate">Ajustes</string>
-    <string name="perfil_option_about">Ajustes</string>
-    <string name="perfil_option_logout">Ajustes</string>
+    <string name="perfil_option_help">Ayuda</string>
+    <string name="perfil_option_donate">Donar</string>
+    <string name="perfil_option_about">Acerca de</string>
+    <string name="perfil_option_logout">Salir</string>
+    <string name="perfil_permiso_galeria">No tiene permiso para acceder a la ubicación del archivo</string>
+    <string name="perfil_editar_avatar">Editar</string>
+    <string name="favoritos_recientes">Recientes</string>
+    <string name="favoritos_lugares">Mis lugares</string>
+    <string name="accion_agregar_favorito">Agregado a favoritos</string>
+    <string name="accion_eliminar_favorito">Eliminado de favoritos</string>
 </resources>

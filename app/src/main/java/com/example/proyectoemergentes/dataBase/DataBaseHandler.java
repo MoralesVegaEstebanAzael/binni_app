@@ -33,6 +33,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_FAVORITOS);
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_LUGAR);
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_IMAGEN);
+        sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_USUARIO);
     }
 
     @Override
@@ -50,7 +51,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         database.execSQL(query);
     }
     public void removeFavoritos(String lugarID){
-      //  SQLiteDatabase db = getReadableDatabase();
         database = getWritableDatabase();
         String query = String.format("DELETE FROM " + Constantes.TABLE_FAVORITOS +
                 " WHERE "+Constantes.FAVORITOS_LUGAR+" ='%s';",lugarID);
@@ -72,11 +72,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         }
     }
 
+
     public void addLugar(String id,String nombre,String lat,String lng,
-                         String categoria,String descripcion,ImageView imageView){
-        byte[] imagen = imageViewToByte(imageView);
+                         String categoria,String descripcion,byte[]  imagen){
         SQLiteDatabase database = getWritableDatabase();
-        String query = "INSERT INTO lugar VALUES(?, ?, ?,? ,? ,? ,?,?)";
+        String query = "INSERT OR IGNORE INTO lugar VALUES(?, ?, ?,? ,? ,? ,?)";
         SQLiteStatement statement = database.compileStatement(query);
         statement.clearBindings();
         statement.bindString(1,id);
@@ -84,9 +84,37 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         statement.bindString(3,lat);
         statement.bindString(4,lng);
         statement.bindString(5,categoria);
-        statement.bindString(5,descripcion);
+        statement.bindString(6,descripcion);
         statement.bindBlob(7,imagen);
         statement.executeInsert();
+    }
+
+    public void updateImagenUsuario(String id,byte[] imagen){
+        SQLiteDatabase database = getWritableDatabase();
+        String query = "UPDATE usuario set imagen = ? WHERE id = ?";
+        SQLiteStatement statement = database.compileStatement(query);
+        statement.clearBindings();
+        statement.bindBlob(1,imagen);
+        statement.bindString(2,id);
+        statement.executeInsert();
+    }
+
+
+    public void addUsuario(String id,String nombre,String correo,byte[] imagen){
+        SQLiteDatabase database = getWritableDatabase();
+        String query = "INSERT OR IGNORE INTO usuario VALUES(?, ?, ?,?)";
+        SQLiteStatement statement = database.compileStatement(query);
+        statement.clearBindings();
+        statement.bindString(1,id);
+        statement.bindString(2,nombre);
+        statement.bindString(3,correo);
+        statement.bindBlob(3,imagen);
+        statement.executeInsert();
+    }
+
+    public Cursor select(String sql){
+        SQLiteDatabase database = getReadableDatabase();
+        return database.rawQuery(sql,null);
     }
 
     public Cursor getLugares(String sql){
@@ -104,7 +132,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         statement.executeInsert();
     }
     public void addImagen(byte[] imagen){
-
         SQLiteDatabase database = getWritableDatabase();
         String query = "INSERT INTO imagen VALUES(?)";
         SQLiteStatement statement = database.compileStatement(query);

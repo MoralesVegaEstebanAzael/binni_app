@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.NotificationTarget;
@@ -26,6 +27,7 @@ public class AdapterLugar extends RecyclerView.Adapter<AdapterLugar.MyViewHolder
     private ArrayList<Lugar> placesArray;
     private Context context;
     private DataBaseHandler localDB;
+    private View view;
     public AdapterLugar(Context context, ArrayList<Lugar> placesArray) {
         this.context = context;
         this.placesArray = placesArray;
@@ -39,61 +41,47 @@ public class AdapterLugar extends RecyclerView.Adapter<AdapterLugar.MyViewHolder
                 .inflate(R.layout.view_place, parent, false);
         return new MyViewHolder(v);
     }
+
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Lugar lugar = placesArray.get(position);
+        byte[] lugarImagen = lugar.getImagen();
         Glide.with(context)
-                .load(lugar.getImage())
+                .load(lugarImagen)
+                .thumbnail()
                 .into(holder.imageView);
-        holder.textView.setText(lugar.getDescripcion());
+        holder.textViewNombre.setText(lugar.getNombre());
         if(localDB.isFavorito(lugar.getId())){ //si es favorito
             holder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
         }
         holder.fav_image.setOnClickListener(new View.OnClickListener() {
-
         @Override
         public void onClick(View view) {
             if(!localDB.isFavorito(lugar.getId())){
                 localDB.addFavoritos(lugar.getId());
                 holder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
-                Toast.makeText(context,"Agregado a favoritos",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,R.string.accion_agregar_favorito,Toast.LENGTH_SHORT).show();
             }else{
                 localDB.removeFavoritos(lugar.getId());
                 holder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                Toast.makeText(context,"Eliminado de favoritos",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,R.string.accion_eliminar_favorito,Toast.LENGTH_SHORT).show();
             }
+            notifyDataSetChanged();
         }
         });
 
-        try{
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    Looper.prepare();
-                    try{
-
-                        byte[] bytes = Glide.with(context)
-                                .as(byte[].class)
-                                .load(lugar.getImage())
-                                .submit()
-                                .get();
-                        localDB.addImagen(bytes);
-                    }catch (Exception e){}
-                }
-            };
-
-            new Thread(runnable).start();
-
-        }catch (Exception e){
-            Log.i("ERRORSQLITE",e.getMessage());
-
-        }
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context,"Lanzar activity",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     @Override
     public int getItemCount() {
         return placesArray.size();
     }
-
+    /*
     @Override
     public void onViewAttachedToWindow(@NonNull MyViewHolder holder) {
         super.onViewAttachedToWindow(holder);
@@ -110,15 +98,20 @@ public class AdapterLugar extends RecyclerView.Adapter<AdapterLugar.MyViewHolder
         animator.start();
     }
 
+    Glide.with(context)
+                .load(lugar.getImage())
+                .into(holder.imageView);
+*/
     public  class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
-        private TextView textView;
+        private TextView textViewNombre;
         private ImageView fav_image;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
             imageView = itemView.findViewById(R.id.place_img);
-            textView = itemView.findViewById(R.id.place_descripcion);
+            textViewNombre = itemView.findViewById(R.id.textVLugarNombre);
             fav_image = itemView.findViewById(R.id.fav);
         }
     }

@@ -5,24 +5,40 @@ public class Lugar {
     private String nombre;
     private String lat;
     private String lng;
-    private String categoria;
+    private String idCategoria;
     private String descripcion;
     private String image;
-
-    public Lugar(String id, String nombre, String lat, String lng, String categoria, String descripcion, String image) {
+    private byte[] imagen;
+    public Lugar(String id, String nombre, String lat, String lng,
+                 String categoria, String descripcion, String image) {
         this.id = id;
         this.nombre = nombre;
         this.lat = lat;
         this.lng = lng;
-        this.categoria = categoria;
+        this.idCategoria = categoria;
         this.descripcion = descripcion;
         this.image = image;
     }
-
-    public Lugar(String id, String image, String descripcion) {
+    public Lugar(String id,String nombre,byte[] imagen ){
         this.id = id;
-        this.image = image;
-        this.descripcion = descripcion;
+        this.nombre = nombre;
+        this.imagen = imagen;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -49,20 +65,8 @@ public class Lugar {
         this.lng = lng;
     }
 
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public String getIdCategoria() {
+        return idCategoria;
     }
 
     public String getImage() {

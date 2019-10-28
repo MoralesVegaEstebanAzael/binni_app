@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X8 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="215.9mm" height="279.4mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 21590 27940"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#373435;stroke-width:20}
+    .fil0 {fill:#4B4B4D}
+   ]]>
+  </style>
+   <clipPath id="id0">
+    <rect x="3318" y="3339" width="15000" height="15000"/>
+   </clipPath>
+ </defs>
+ <g id="Capa_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g style="clip-path:url(#id0)">
+   <image id="usuario.png" x="3318" y="3339" width="15000" height="15000" xlink:href="edit_user_Images\edit_user_ImgID1.png"/>
+  </g>
+  <path class="fil0 str0" d="M10818 10839l7500 0c0,4142 -3358,7500 -7500,7500 -4142,0 -7500,-3358 -7500,-7500l7500 0z"/>
+ </g>
+</svg>

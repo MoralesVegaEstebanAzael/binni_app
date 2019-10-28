@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,17 +19,21 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.adapter.AdapterImagen;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
@@ -41,106 +48,95 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
-    private HomeViewModel homeViewModel;
-    private ArrayList<Lugar> placesArray;
-    private ArrayList<Imagen> imagenesList;
-    private Button btnCargarDatos;
-    private Button btnCargarDBLocal;
-    private RecyclerView recyclerView;
-    private RecyclerView recyclerViewImagenes;
-    private AdapterImagen adapterImagen;
-    private AdapterLugar adapterLugar;
+public class HomeFragment extends Fragment{
+    private RecyclerView recyclerViewZonasArq;
+    private RecyclerView recyclerViewTemplos;
+    private RecyclerView recyclerViewMuseos;
+    private AdapterLugar adapterLugarZonasArq;
+    private AdapterLugar adapterLugarTemplos;
+    private AdapterLugar adapterLugarMuseos;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ArrayList<Lugar> listZonasArq;
+    private ArrayList<Lugar> listPlaces;
+    private ArrayList<Lugar> listTemplos;
+    private ArrayList<Lugar> listMuseos;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         init(root);
+        loadRecycerView();
         return root;
     }
 
     public void init(View view){
-        btnCargarDatos = view.findViewById(R.id.btnCargarDatos);
-        btnCargarDBLocal = view.findViewById(R.id.btnCargarDBLocal);
+        listZonasArq = new ArrayList<Lugar>();
+        listPlaces = new ArrayList<Lugar>();
+        listTemplos = new ArrayList<Lugar>();
+        listMuseos = new ArrayList<Lugar>();
 
-        placesArray = new ArrayList<Lugar>();
-        imagenesList = new ArrayList<Imagen>();
-
-        recyclerView = view.findViewById(R.id.recycler_view_places);
+        recyclerViewZonasArq = view.findViewById(R.id.recycler_view_places);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
-        adapterLugar = new AdapterLugar(getContext(),placesArray);
-        recyclerView.setAdapter(adapterLugar);
+        recyclerViewZonasArq.setLayoutManager(layoutManager);
+        adapterLugarZonasArq = new AdapterLugar(getContext(),listZonasArq);
+        recyclerViewZonasArq.setAdapter(adapterLugarZonasArq);
 
-        recyclerViewImagenes = view.findViewById(R.id.reycler_view_imagenes);
+        recyclerViewTemplos = view.findViewById(R.id.reyclerViewTemplos);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
         layoutManager2.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerViewImagenes.setLayoutManager(layoutManager2);
-        adapterImagen = new AdapterImagen(getContext(),imagenesList);
-        recyclerViewImagenes.setAdapter(adapterImagen);
+        recyclerViewTemplos.setLayoutManager(layoutManager2);
+        adapterLugarTemplos = new AdapterLugar(getContext(),listTemplos);
+        recyclerViewTemplos.setAdapter(adapterLugarTemplos);
 
 
-        btnCargarDBLocal.setOnClickListener(this);
-        btnCargarDatos.setOnClickListener(this);
-    }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        super.onCreate(savedInstanceState);
-    }
+        recyclerViewMuseos = view.findViewById(R.id.reyclerViewMuseos);
+        LinearLayoutManager layoutManager3 = new LinearLayoutManager(getContext());
+        layoutManager3.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerViewMuseos.setLayoutManager(layoutManager3);
+        adapterLugarMuseos = new AdapterLugar(getContext(),listMuseos);
+        recyclerViewMuseos.setAdapter(adapterLugarMuseos);
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_menu,menu);
-        menu.findItem(R.id.action_qr_code).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if(id==R.id.action_qr_code){
-            Toast.makeText(getContext(),"CÓDIGO QR",Toast.LENGTH_SHORT).show();
-        }
-        return super.onOptionsItemSelected(item);
+        swipeRefreshListener(view);
+
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnCargarDatos:
-                places();
-                break;
-            case R.id.btnCargarDBLocal:
-                lugaresFromLocalDB();
-                break;
-        }
+    private void swipeRefreshListener(View view){
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshHome);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //url1
+                String url=getString(R.string.url_api_lugares_categoria);
+                apiLugares(url); //solicitud a API
+                 //actualizar el recyclerView
+                loadRecycerView();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
+    }
+    private void loadRecycerView(){
+        lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '1'",listZonasArq,adapterLugarZonasArq);
+        lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '2'",listTemplos,adapterLugarTemplos);
+        lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '3'",listMuseos,adapterLugarMuseos);
+
     }
 
-    class LoginTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-        }
-    }
-
-    public void places(){
-        String url=getString(R.string.url_server)+"mostrarPlaces.php";
+    public void apiLugares(String url){
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONArray jsonArray = new JSONArray(response);
-                    llenarListaLugares(jsonArray);
+                    addLugar(jsonArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -154,34 +150,69 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         requestQueue.add(stringRequest);
     }
 
-    private void llenarListaLugares(JSONArray jsonArray) throws JSONException {
+    private void addLugar(JSONArray jsonArray)throws JSONException{
         Lugar lugar;
+        listPlaces.clear();
         for (int i=0; i<jsonArray.length(); i++) {
             JSONObject jsonObject= jsonArray.getJSONObject(i);
             lugar = new Lugar(
-                    jsonObject.optString("id_place"),
-                    jsonObject.optString("ruta_imagen"),
-                    jsonObject.optString("descripcion"));
-            placesArray.add(lugar);
+                    jsonObject.optString("idlugar"),
+                    jsonObject.optString("nombre"),
+                    jsonObject.optString("latitud"),
+                    jsonObject.optString("longitud"),
+                    jsonObject.optString("idcategoria"),
+                    jsonObject.optString("descripcion"),
+                    jsonObject.optString("url"));
+            listPlaces.add(lugar);
         }
-        adapterLugar.notifyDataSetChanged();
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                try{
+                    for(Lugar lugar:listPlaces){
+                        byte[] bytes = Glide.with(getContext())
+                                .as(byte[].class)
+                                .load(lugar.getImage())
+                                .submit()
+                                .get();
+                        MainActivity.dataBaseHandler.addLugar(lugar.getId(),
+                                lugar.getNombre(),lugar.getLat(),
+                                lugar.getLng(),lugar.getIdCategoria(),
+                                lugar.getDescripcion(),
+                                bytes);
+                    }
+                }catch (Exception e){
+                    Log.i("ERRORSQLITE",e.getMessage());
+                }
+            }
+        };
+        new Thread(runnable).start();
     }
 
-    private void lugaresFromLocalDB(){
-
-        Cursor cursor = MainActivity.dataBaseHandler.getLugares("SELECT * FROM imagen");
-        placesArray.clear();
-
+    private void lugaresFromLocalDB(String sql,ArrayList arrayList,AdapterLugar adapterLugar){
+        Cursor cursor = MainActivity.dataBaseHandler.getLugares(sql);
+        arrayList.clear();
+        Lugar lugar;
         while(cursor.moveToNext()){
-            byte[] image = cursor.getBlob(0);
-            imagenesList.add(new Imagen(image));
+            String id = cursor.getString(0);
+            String nombre = cursor.getString(1);
+            byte[] image = cursor.getBlob(2);
+            lugar = new Lugar(id,nombre,image);
+            arrayList.add(lugar);
         }
-        adapterImagen.notifyDataSetChanged();
+        adapterLugar.notifyDataSetChanged();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-       // mRecyclerView.setAdapter(mAdapter);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+       // ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

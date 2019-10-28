@@ -7,11 +7,8 @@ public class Constantes {
 
 
     //tabla usuario
-    public static final String TABLE_USUARIO="usuario";
-    public static final String USUARIO_ID= "id";
-    public static final String USUARIO_NOMBRE = "nombre";
-    public static final String CREATE_TABLE_USUARIO = "CREATE TABLE "+TABLE_USUARIO
-            +" ("+USUARIO_ID+" TEXT,"+USUARIO_NOMBRE+" TEXT)";
+    public static final String CREATE_TABLE_USUARIO="CREATE TABLE IF NOT EXISTS usuario " +
+            "(id STRING PRIMARY KEY, nombre STRING, correo STRING,imagen BLOB)";
 
     //tabla lugar
     public static final String CREATE_TABLE_LUGAR="CREATE TABLE IF NOT EXISTS lugar " +
