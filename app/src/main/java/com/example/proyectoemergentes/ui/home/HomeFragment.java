@@ -86,14 +86,15 @@ public class HomeFragment extends Fragment{
 
     public void initSlider(View view){
         listAnuncios = new ArrayList<Anuncio>();
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new SliderTimer(), 6000, 4000);
+
 
         viewPager = view.findViewById(R.id.viewPager);
         indicator = view.findViewById(R.id.indicador);
         adaptSlider = new SliderAdapter(getContext(),listAnuncios);
         viewPager.setAdapter(adaptSlider);
         indicator.setupWithViewPager(viewPager,true);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new SliderTimer(), 6000, 4000);
     }
 
     public void init(View view){
@@ -246,6 +247,8 @@ public class HomeFragment extends Fragment{
         };
         new Thread(runnable).start();
 
+
+
     }
 
     private void addLugar(JSONArray jsonArray)throws JSONException{
@@ -340,6 +343,7 @@ public class HomeFragment extends Fragment{
                     if(adaptSlider.getCount() > 0) {
                         if (viewPager.getCurrentItem() < adaptSlider.getCount() - 1) {
                             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+
                         } else {
                             viewPager.setCurrentItem(0, true);
                         }
