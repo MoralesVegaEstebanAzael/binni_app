@@ -80,6 +80,7 @@ public class HomeFragment extends Fragment{
         initSlider(root);//slider task
         init(root);
         loadRecycerView();
+        loadAnuncio();
         return root;
     }
 
