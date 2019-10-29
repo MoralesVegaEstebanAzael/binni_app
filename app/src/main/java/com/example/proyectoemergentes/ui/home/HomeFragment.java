@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,15 +39,20 @@ import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.adapter.AdapterImagen;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.adapter.SliderAdapter;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
+import com.example.proyectoemergentes.pojos.Anuncio;
 import com.example.proyectoemergentes.pojos.Imagen;
 import com.example.proyectoemergentes.pojos.Lugar;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeFragment extends Fragment{
     private RecyclerView recyclerViewZonasArq;
@@ -61,14 +67,32 @@ public class HomeFragment extends Fragment{
     private ArrayList<Lugar> listTemplos;
     private ArrayList<Lugar> listMuseos;
 
+    //slider utils
+    private ViewPager viewPager;
+    private TabLayout indicator;
+    private SliderAdapter adaptSlider;
+    ArrayList<Anuncio> listAnuncios;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        initSlider(root);//slider task
         init(root);
         loadRecycerView();
         return root;
+    }
+
+    public void initSlider(View view){
+        listAnuncios = new ArrayList<Anuncio>();
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new SliderTimer(), 6000, 4000);
+
+        viewPager = view.findViewById(R.id.viewPager);
+        indicator = view.findViewById(R.id.indicador);
+        adaptSlider = new SliderAdapter(getContext(),listAnuncios);
+        viewPager.setAdapter(adaptSlider);
+        indicator.setupWithViewPager(viewPager,true);
     }
 
     public void init(View view){
@@ -110,9 +134,12 @@ public class HomeFragment extends Fragment{
             public void onRefresh() {
                 //url1
                 String url=getString(R.string.url_api_lugares_categoria);
+                String urlAnuncios = getString(R.string.url_api_anuncios);
                 apiLugares(url); //solicitud a API
+                apiAnuncios(urlAnuncios);
                  //actualizar el recyclerView
                 loadRecycerView();
+                loadAnuncio();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -120,6 +147,8 @@ public class HomeFragment extends Fragment{
                     }
                 },2000);
             }
+
+
         });
     }
     private void loadRecycerView(){
@@ -127,6 +156,10 @@ public class HomeFragment extends Fragment{
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '2'",listTemplos,adapterLugarTemplos);
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '3'",listMuseos,adapterLugarMuseos);
 
+    }
+
+    private void loadAnuncio(){
+        anunciosFromLocalDB("SELECT idlugar,nombre_lugar,imagen FROM anuncio",listAnuncios,adaptSlider);
     }
 
     public void apiLugares(String url){
@@ -148,6 +181,70 @@ public class HomeFragment extends Fragment{
             }
         });
         requestQueue.add(stringRequest);
+    }
+
+    private void apiAnuncios(String urlAnuncios) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, urlAnuncios, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    addAnuncios(jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(),"Error al cargar los datos" ,Toast.LENGTH_LONG).show();
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    private void addAnuncios(JSONArray jsonArray) throws JSONException{
+        Anuncio anuncio;
+        listAnuncios.clear();
+        for (int i=0;i<jsonArray.length();i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            anuncio = new Anuncio(
+                    jsonObject.optString("idanuncio"),
+                    jsonObject.optString("idsocio"),
+                    jsonObject.optString("idlugar"),
+                    jsonObject.optString("fecha_inicio"),
+                    jsonObject.optString("duracion"),
+                    jsonObject.optString("idcategoria"),
+                    jsonObject.optString("nombre_lugar"),
+                    jsonObject.optString("url"));
+            listAnuncios.add(anuncio);
+
+        }
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                try{
+                    for(Anuncio anuncioItem:listAnuncios){
+                        byte[] bytes = Glide.with(getContext())
+                                .as(byte[].class)
+                                .load(anuncioItem.getUrl())
+                                .submit()
+                                .get();
+                        MainActivity.dataBaseHandler.addAnuncio(anuncioItem.getId(),
+                                anuncioItem.getIdSocio(),anuncioItem.getIdLugar(),
+                                anuncioItem.getFechaInicio(),anuncioItem.getDuracion(),
+                                anuncioItem.getIdCategoria(),anuncioItem.getNombreLugar(),
+                                bytes);
+                    }
+                }catch (Exception e){
+                    Log.i("ERRORSQLITE",e.getMessage());
+                }
+            }
+        };
+        new Thread(runnable).start();
+
     }
 
     private void addLugar(JSONArray jsonArray)throws JSONException{
@@ -205,6 +302,20 @@ public class HomeFragment extends Fragment{
         adapterLugar.notifyDataSetChanged();
     }
 
+    private void anunciosFromLocalDB(String sql,ArrayList arrayList,SliderAdapter adapterAnuncio){
+        Cursor cursor = MainActivity.dataBaseHandler.getAnuncios(sql);
+        arrayList.clear();
+        Anuncio anuncio;
+        while(cursor.moveToNext()){
+            String id = cursor.getString(0);
+            String nombreLugar = cursor.getString(1);
+            byte[] image = cursor.getBlob(2);
+            anuncio = new Anuncio(id,nombreLugar,image);
+            arrayList.add(anuncio);
+        }
+        adapterAnuncio.notifyDataSetChanged();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -214,5 +325,27 @@ public class HomeFragment extends Fragment{
     public void onStop() {
         super.onStop();
        // ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
+
+    private class SliderTimer extends TimerTask {
+        private Handler mHandler = new Handler(Looper.getMainLooper());
+
+        @Override
+        public void run() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(adaptSlider.getCount() > 0) {
+                        if (viewPager.getCurrentItem() < adaptSlider.getCount() - 1) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+                        } else {
+                            viewPager.setCurrentItem(0, true);
+                        }
+                    }
+                }
+            });
+
+        }
     }
 }

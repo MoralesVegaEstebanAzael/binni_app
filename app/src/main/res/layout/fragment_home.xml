@@ -16,10 +16,24 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="230dp">
-                    <com.example.proyectoemergentes.RoundedImageView
+<!--                    <com.example.proyectoemergentes.RoundedImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:src="@drawable/anuncio4" />-->
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/viewPager"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/anuncio4" />
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/indicador"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        app:tabBackground="@drawable/indicador_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp" />
+
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_marginTop="200dp"
