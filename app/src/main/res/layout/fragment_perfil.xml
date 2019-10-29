@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorGray"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -78,7 +78,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="569dp"
             android:background="@drawable/bck_rounded"
             android:orientation="vertical">
 
@@ -102,7 +102,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="@string/perfil_option_settings" />
+                    android:text="@string/perfil_menu_ajustes" />
 
                 <ImageView
                     android:layout_width="30dp"
@@ -129,7 +129,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="@string/perfil_option_help" />
+                    android:text="@string/perfil_menu_ayuda" />
 
                 <ImageView
                     android:layout_width="30dp"
@@ -157,7 +157,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="@string/perfil_option_donate" />
+                    android:text="@string/perfil_menu_donar" />
 
                 <ImageView
                     android:layout_width="30dp"
@@ -184,7 +184,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="@string/perfil_option_about" />
+                    android:text="@string/perfil_menu_acercade" />
 
                 <ImageView
                     android:layout_width="30dp"
@@ -195,9 +195,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
                 android:orientation="horizontal"
                 android:paddingLeft="20dp"
-                android:layout_marginBottom="30dp"
                 android:paddingTop="10dp"
                 android:paddingRight="20dp">
 
@@ -212,7 +212,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="@string/perfil_option_logout" />
+                    android:text="@string/perfil_menu_salir" />
 
                 <ImageView
                     android:layout_width="30dp"

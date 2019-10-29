@@ -8,21 +8,22 @@
     <!-- URL API -->
     <string name="url_api_lugares_categoria">http://sistema-turismo.herokuapp.com/api/lugares/</string>
 
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name ="url_server">http://yurtaaplication.000webhostapp.com/</string>
+    <string name="url_server">http://yurtaaplication.000webhostapp.com/</string>
     <string name="title_popular_place">Populares</string>
     <string name="categoria_museos">Museos</string>
     <string name="categoria_templos">Templos y Exconventos</string>
     <string name="categoria_mercados">Mercados</string>
 
-    <string name="perfil_option_settings">Ajustes</string>
-    <string name="perfil_option_help">Ayuda</string>
-    <string name="perfil_option_donate">Donar</string>
-    <string name="perfil_option_about">Acerca de</string>
-    <string name="perfil_option_logout">Salir</string>
+
+    <string name="perfil_menu_ajustes">Ajustes</string>
+    <string name="perfil_menu_ayuda">Ayuda</string>
+    <string name="perfil_menu_donar">Donar</string>
+    <string name="perfil_menu_acercade">Acerca de</string>
+    <string name="perfil_menu_salir">Salir</string>
     <string name="perfil_permiso_galeria">No tiene permiso para acceder a la ubicación del archivo</string>
+    <string name="perfil_permiso_abrir_galeria">Elija la aplicación</string>
     <string name="perfil_editar_avatar">Editar</string>
     <string name="favoritos_recientes">Recientes</string>
     <string name="favoritos_lugares">Mis lugares</string>
