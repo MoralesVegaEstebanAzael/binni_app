@@ -29,7 +29,8 @@
                         android:id="@+id/indicador"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="150dp"
+                        android:background="@drawable/indicador_overlay"
+                        android:layout_marginTop="160dp"
                         app:tabBackground="@drawable/indicador_selector"
                         app:tabGravity="center"
                         app:tabIndicatorHeight="0dp" />
