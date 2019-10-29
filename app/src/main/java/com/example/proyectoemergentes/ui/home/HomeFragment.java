@@ -266,7 +266,6 @@ public class HomeFragment extends Fragment{
                     jsonObject.optString("url"));
             listPlaces.add(lugar);
         }
-
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
