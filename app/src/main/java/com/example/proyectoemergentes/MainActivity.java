@@ -1,27 +1,18 @@
 package com.example.proyectoemergentes;
 
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.proyectoemergentes.dataBase.Constantes;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
-import com.example.proyectoemergentes.pojos.Lugar;
-import com.example.proyectoemergentes.ui.dashboard.DashboardFragment;
+import com.example.proyectoemergentes.ui.lugares.LugaresFragment;
 import com.example.proyectoemergentes.ui.home.HomeFragment;
-import com.example.proyectoemergentes.ui.notifications.NotificationsFragment;
+import com.example.proyectoemergentes.ui.favoritos.FavoritosFragment;
 import com.example.proyectoemergentes.ui.perfil.PerfilFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -134,10 +125,10 @@ public class MainActivity extends AppCompatActivity {
                         transaction.replace(R.id.nav_host_fragment, new HomeFragment());
                         break;
                     case 1:
-                        transaction.replace(R.id.nav_host_fragment, new DashboardFragment());
+                        transaction.replace(R.id.nav_host_fragment, new LugaresFragment());
                         break;
                     case 2:
-                        transaction.replace(R.id.nav_host_fragment, new NotificationsFragment());
+                        transaction.replace(R.id.nav_host_fragment, new FavoritosFragment());
                         break;
                     case 3:
                         transaction.replace(R.id.nav_host_fragment, new PerfilFragment());

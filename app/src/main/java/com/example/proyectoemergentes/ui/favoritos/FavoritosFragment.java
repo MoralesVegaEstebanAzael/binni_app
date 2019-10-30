@@ -1,4 +1,4 @@
-package com.example.proyectoemergentes.ui.notifications;
+package com.example.proyectoemergentes.ui.favoritos;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,29 +8,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
-import com.example.proyectoemergentes.adapter.AdapterImagen;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
-import com.example.proyectoemergentes.pojos.Imagen;
 import com.example.proyectoemergentes.pojos.Lugar;
 
 import java.util.ArrayList;
 
-public class NotificationsFragment extends Fragment {
+public class FavoritosFragment extends Fragment {
     private ArrayList<Lugar> arrayRecentPlaces;
     private ArrayList<Lugar> arrayFavorites;
     private RecyclerView recyclerViewFavorites;
@@ -39,7 +33,7 @@ public class NotificationsFragment extends Fragment {
     private AdapterLugar adapterRecent;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View root = inflater.inflate(R.layout.fragment_favoritos, container, false);
         init(root);
         favoritesFromLocalDB();
         recentFavFromLocalDB();

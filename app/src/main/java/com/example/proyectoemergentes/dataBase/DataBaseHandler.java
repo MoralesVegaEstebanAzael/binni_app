@@ -107,13 +107,12 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         statement.executeInsert();
     }
 
-    public void updateImagenUsuario(String id,byte[] imagen){
+    public void updateImagenUsuario(byte[] imagen){
         SQLiteDatabase database = getWritableDatabase();
-        String query = "UPDATE usuario set imagen = ? WHERE id = ?";
+        String query = "UPDATE usuario set imagen = ? WHERE id = '1'";
         SQLiteStatement statement = database.compileStatement(query);
         statement.clearBindings();
         statement.bindBlob(1,imagen);
-        statement.bindString(2,id);
         statement.executeInsert();
     }
 

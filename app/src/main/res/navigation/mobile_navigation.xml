@@ -13,15 +13,15 @@
 
     <fragment
         android:id="@+id/navigation_lugares"
-        android:name="com.example.proyectoemergentes.ui.dashboard.DashboardFragment"
+        android:name="com.example.proyectoemergentes.ui.lugares.LugaresFragment"
         android:label="@string/title_places"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_lugares" />
 
     <fragment
         android:id="@+id/navigation_favoritos"
-        android:name="com.example.proyectoemergentes.ui.notifications.NotificationsFragment"
+        android:name="com.example.proyectoemergentes.ui.favoritos.FavoritosFragment"
         android:label="@string/title_favoritos"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_favoritos" />
 
     <fragment
         android:id="@+id/navigation_perfil"
