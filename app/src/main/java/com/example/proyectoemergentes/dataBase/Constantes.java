@@ -25,4 +25,8 @@ public class Constantes {
     //tabla imagen
     public static final String CREATE_TABLE_IMAGEN = "CREATE TABLE  IF NOT EXISTS imagen " +
             "(imagen BLOB)";
+
+    //tabla anuncio
+    public static final String CREATE_TABLE_ANUNCIO = "CREATE TABLE IF NOT EXISTS anuncio(" +
+            "idanuncio STRING PRIMARY KEY,idsocio STRING,idlugar STRING,fecha_inicio STRING,duracion STRING,idcategoria STRING,nombre_lugar TEXT,imagen BLOB)";
 }

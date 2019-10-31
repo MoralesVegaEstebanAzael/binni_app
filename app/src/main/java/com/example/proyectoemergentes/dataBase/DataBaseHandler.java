@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,6 +35,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_LUGAR);
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_IMAGEN);
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_USUARIO);
+        sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_ANUNCIO);
     }
 
     @Override
@@ -88,6 +90,22 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         statement.bindBlob(7,imagen);
         statement.executeInsert();
     }
+    public void addAnuncio(String idAnuncio,String idSocio,String idLugar,String fechaInicio,
+                         String duracion,String idCategoria,String nombreLugar,byte[]  imagen){
+        SQLiteDatabase database = getWritableDatabase();
+        String query = "INSERT OR IGNORE INTO anuncio VALUES(?, ?, ?,? ,? ,? ,?,?)";
+        SQLiteStatement statement = database.compileStatement(query);
+        statement.clearBindings();
+        statement.bindString(1,idAnuncio);
+        statement.bindString(2,idSocio);
+        statement.bindString(3,idLugar);
+        statement.bindString(4,fechaInicio);
+        statement.bindString(5,duracion);
+        statement.bindString(6,idCategoria);
+        statement.bindString(7,nombreLugar);
+        statement.bindBlob(8,imagen);
+        statement.executeInsert();
+    }
 
     public void updateImagenUsuario(byte[] imagen){
         SQLiteDatabase database = getWritableDatabase();
@@ -117,6 +135,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
     public Cursor getLugares(String sql){
+        SQLiteDatabase database = getReadableDatabase();
+        return database.rawQuery(sql,null);
+    }
+
+    public Cursor getAnuncios(String sql){
         SQLiteDatabase database = getReadableDatabase();
         return database.rawQuery(sql,null);
     }

@@ -1,6 +1,8 @@
 package com.example.proyectoemergentes.adapter;
 
 import android.animation.Animator;
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Looper;
 import android.util.Log;
@@ -14,12 +16,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.NotificationTarget;
+import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.example.proyectoemergentes.pojos.Lugar;
+import com.example.proyectoemergentes.ui.favoritos.FavoritosFragment;
 
 import java.util.ArrayList;
 
@@ -51,12 +58,16 @@ public class AdapterLugar extends RecyclerView.Adapter<AdapterLugar.MyViewHolder
                 .thumbnail()
                 .into(holder.imageView);
         holder.textViewNombre.setText(lugar.getNombre());
+
         if(localDB.isFavorito(lugar.getId())){ //si es favorito
             holder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
         }
         holder.fav_image.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Fragment frg = null;
+            frg = ((FragmentActivity)context).getSupportFragmentManager().findFragmentByTag("FAVTAG");
+
             if(!localDB.isFavorito(lugar.getId())){
                 localDB.addFavoritos(lugar.getId());
                 holder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
@@ -66,7 +77,13 @@ public class AdapterLugar extends RecyclerView.Adapter<AdapterLugar.MyViewHolder
                 holder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                 Toast.makeText(context,R.string.accion_eliminar_favorito,Toast.LENGTH_SHORT).show();
             }
-            notifyDataSetChanged();
+
+            if(frg!=null){
+                final FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+                ft.detach(frg);
+                ft.attach(frg);
+                ft.commit();
+            }
         }
         });
 
@@ -115,4 +132,7 @@ public class AdapterLugar extends RecyclerView.Adapter<AdapterLugar.MyViewHolder
             fav_image = itemView.findViewById(R.id.fav);
         }
     }
+
+
+
 }

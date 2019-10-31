@@ -1,6 +1,7 @@
 package com.example.proyectoemergentes.ui.favoritos;
 
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.pojos.Lugar;
+import com.example.proyectoemergentes.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 
@@ -34,9 +36,10 @@ public class FavoritosFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_favoritos, container, false);
+
         init(root);
-        favoritesFromLocalDB();
-        recentFavFromLocalDB();
+        AsyncTaskLoadDB asyncTaskLoadDB = new AsyncTaskLoadDB();
+        asyncTaskLoadDB.execute();
         return root;
     }
     public void init(View view){
@@ -68,14 +71,16 @@ public class FavoritosFragment extends Fragment {
             lugar = new Lugar(id,nombre,image);
             arrayFavorites.add(lugar);
         }
-        adapterFavorites.notifyDataSetChanged();
     }
-
+    private void notificarAdaptadores(){
+        adapterFavorites.notifyDataSetChanged();
+        adapterRecent.notifyDataSetChanged();
+    }
     private void recentFavFromLocalDB(){
         Cursor cursor = MainActivity.dataBaseHandler
                 .getLugares("SELECT id,nombre,imagen " +
                         "FROM lugar INNER JOIN favoritos ON lugar.id = lugar " +
-                        "ORDER BY lugar.id DESC LIMIT 2");
+                        "ORDER BY lugar.id DESC LIMIT 5");
         arrayRecentPlaces.clear();
         Lugar lugar;
         while(cursor.moveToNext()){
@@ -85,7 +90,7 @@ public class FavoritosFragment extends Fragment {
             lugar = new Lugar(id,nombre,image);
             arrayRecentPlaces.add(lugar);
         }
-        adapterRecent.notifyDataSetChanged();
+
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,5 +110,33 @@ public class FavoritosFragment extends Fragment {
             Toast.makeText(getContext(),"CÓDIGO QR",Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    private class AsyncTaskLoadDB extends AsyncTask<Void,Integer,Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {//acceso a la BD local en segundo plano
+            favoritesFromLocalDB();
+            recentFavFromLocalDB();
+            publishProgress(1);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            notificarAdaptadores();
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
     }
 }

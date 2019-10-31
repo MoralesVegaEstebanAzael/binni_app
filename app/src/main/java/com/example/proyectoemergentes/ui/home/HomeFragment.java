@@ -1,6 +1,11 @@
 package com.example.proyectoemergentes.ui.home;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,28 +16,50 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ByteArrayPool;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.ByteBufferFileLoader;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.Target;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.adapter.SliderAdapter;
+import com.example.proyectoemergentes.dataBase.DataBaseHandler;
+import com.example.proyectoemergentes.pojos.Anuncio;
 import com.example.proyectoemergentes.pojos.Lugar;
+import com.google.android.material.tabs.TabLayout;
 
+import org.apache.http.util.ByteArrayBuffer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 public class HomeFragment extends Fragment{
     private RecyclerView recyclerViewZonasArq;
@@ -47,14 +74,35 @@ public class HomeFragment extends Fragment{
     private ArrayList<Lugar> listTemplos;
     private ArrayList<Lugar> listMuseos;
 
-
+    //slider utils
+    private ViewPager viewPager;
+    private TabLayout indicator;
+    private SliderAdapter adaptSlider;
+    ArrayList<Anuncio> listAnuncios;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        View  root  = inflater.inflate(R.layout.fragment_home, container, false);
+
         init(root);
-        loadRecycerView();
+        //initSlider(root);
+
+        //asyn task cargar desde base de datos local
+        AsyncTaskLoadDB asyncTaskLoadDB = new AsyncTaskLoadDB();
+        asyncTaskLoadDB.execute();
+
         return root;
+    }
+
+    public void initSlider(View view){
+        listAnuncios = new ArrayList<Anuncio>();
+        viewPager = view.findViewById(R.id.viewPager);
+        indicator = view.findViewById(R.id.indicador);
+        adaptSlider = new SliderAdapter(getContext(),listAnuncios);
+        viewPager.setAdapter(adaptSlider);
+        indicator.setupWithViewPager(viewPager,true);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new SliderTimer(), 6000, 4000);
     }
 
     public void init(View view){
@@ -94,11 +142,19 @@ public class HomeFragment extends Fragment{
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //url1
-                String url=getString(R.string.url_api_lugares_categoria);
-                apiLugares(url); //solicitud a API
-                 //actualizar el recyclerView
-                loadRecycerView();
+
+                apiLugares(getString(R.string.url_api_lugares_categoria));
+
+                AsyncTaskLoadDB asyncTaskLoadDB = new AsyncTaskLoadDB();
+                asyncTaskLoadDB.execute();
+
+                Fragment frg = null;
+                frg = getActivity().getSupportFragmentManager().findFragmentByTag("HOMETAG");
+                               final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.detach(frg);
+                ft.attach(frg);
+                ft.commit();
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -108,21 +164,55 @@ public class HomeFragment extends Fragment{
             }
         });
     }
-    private void loadRecycerView(){
+
+    private void cargarDatosLocalDB(){
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '1'",listZonasArq,adapterLugarZonasArq);
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '2'",listTemplos,adapterLugarTemplos);
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '3'",listMuseos,adapterLugarMuseos);
-
+      //  anunciosFromLocalDB("SELECT idlugar,nombre_lugar,imagen FROM anuncio",listAnuncios,adaptSlider);
     }
 
-    public void apiLugares(String url){
+    private void notificarAdaptadores(){
+        adapterLugarMuseos.notifyDataSetChanged();
+        adapterLugarTemplos.notifyDataSetChanged();
+        adapterLugarZonasArq.notifyDataSetChanged();
+        //adaptSlider.notifyDataSetChanged();
+    }
+
+    private void apiLugares(String url){
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONArray jsonArray = new JSONArray(response);
+                    Log.i("RESPUESTA",""+jsonArray);
                     addLugar(jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(),"Error al cargar los datos" ,Toast.LENGTH_LONG).show();
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    private void apiAnuncios(String urlAnuncios) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, urlAnuncios, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    addAnuncios(jsonArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -136,45 +226,70 @@ public class HomeFragment extends Fragment{
         requestQueue.add(stringRequest);
     }
 
-    private void addLugar(JSONArray jsonArray)throws JSONException{
-        Lugar lugar;
-        listPlaces.clear();
-        for (int i=0; i<jsonArray.length(); i++) {
-            JSONObject jsonObject= jsonArray.getJSONObject(i);
-            lugar = new Lugar(
+    private void addAnuncios(JSONArray jsonArray) throws JSONException{
+        Anuncio anuncio;
+        listAnuncios.clear();
+        for (int i=0;i<jsonArray.length();i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            anuncio = new Anuncio(
+                    jsonObject.optString("idanuncio"),
+                    jsonObject.optString("idsocio"),
                     jsonObject.optString("idlugar"),
-                    jsonObject.optString("nombre"),
-                    jsonObject.optString("latitud"),
-                    jsonObject.optString("longitud"),
+                    jsonObject.optString("fecha_inicio"),
+                    jsonObject.optString("duracion"),
                     jsonObject.optString("idcategoria"),
-                    jsonObject.optString("descripcion"),
+                    jsonObject.optString("nombre_lugar"),
                     jsonObject.optString("url"));
-            listPlaces.add(lugar);
+            listAnuncios.add(anuncio);
         }
+    }
 
-        Runnable runnable = new Runnable() {
-            @Override
+    JSONArray json;
+    private void addLugar(JSONArray jsonArray) throws JSONException, ExecutionException, InterruptedException {
+        json = jsonArray;
+        new Thread(new Runnable() {
+            byte[] bytes ;
             public void run() {
-                Looper.prepare();
-                try{
-                    for(Lugar lugar:listPlaces){
-                        byte[] bytes = Glide.with(getContext())
-                                .as(byte[].class)
-                                .load(lugar.getImage())
-                                .submit()
-                                .get();
+                Lugar lugar;
+                listPlaces.clear();
+                for (int i=0; i<json.length(); i++) {
+                    JSONObject jsonObject= null;
+                    try {
+                        jsonObject = json.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    lugar = new Lugar(
+                            jsonObject.optString("idlugar"),
+                            jsonObject.optString("nombre"),
+                            jsonObject.optString("latitud"),
+                            jsonObject.optString("longitud"),
+                            jsonObject.optString("idcategoria"),
+                            jsonObject.optString("descripcion"),
+                            jsonObject.optString("url"));
+                    if(isAdded()){
+                        try {
+                            bytes = Glide.with(getContext())
+                                    .as(byte[].class)
+                                    .load(lugar.getImage())
+                                    .submit()
+                                    .get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         MainActivity.dataBaseHandler.addLugar(lugar.getId(),
                                 lugar.getNombre(),lugar.getLat(),
                                 lugar.getLng(),lugar.getIdCategoria(),
                                 lugar.getDescripcion(),
                                 bytes);
                     }
-                }catch (Exception e){
-                    Log.i("ERRORSQLITE",e.getMessage());
                 }
             }
-        };
-        new Thread(runnable).start();
+        }).start();
+
+
     }
 
     private void lugaresFromLocalDB(String sql,ArrayList arrayList,AdapterLugar adapterLugar){
@@ -188,7 +303,20 @@ public class HomeFragment extends Fragment{
             lugar = new Lugar(id,nombre,image);
             arrayList.add(lugar);
         }
-        adapterLugar.notifyDataSetChanged();
+    }
+
+    private void anunciosFromLocalDB(String sql,ArrayList arrayList,SliderAdapter adapterAnuncio){
+        Cursor cursor = MainActivity.dataBaseHandler.getAnuncios(sql);
+        arrayList.clear();
+        Anuncio anuncio;
+        while(cursor.moveToNext()){
+            String id = cursor.getString(0);
+            String nombreLugar = cursor.getString(1);
+            byte[] image = cursor.getBlob(2);
+            anuncio = new Anuncio(id,nombreLugar,image);
+            arrayList.add(anuncio);
+        }
+       // adapterAnuncio.notifyDataSetChanged();
     }
 
     @Override
@@ -201,4 +329,57 @@ public class HomeFragment extends Fragment{
         super.onStop();
        // ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
+
+    private class SliderTimer extends TimerTask {
+        private Handler mHandler = new Handler(Looper.getMainLooper());
+
+        @Override
+        public void run() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(adaptSlider.getCount() > 0) {
+                        if (viewPager.getCurrentItem() < adaptSlider.getCount() - 1) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+
+                        } else {
+                            viewPager.setCurrentItem(0, true);
+                        }
+                    }
+                }
+            });
+
+        }
+    }
+
+
+    //Proceso para obtener datos locales
+    private class AsyncTaskLoadDB extends AsyncTask<Void,Integer,Boolean>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {//acceso a la BD local en segundo plano
+            cargarDatosLocalDB();
+            publishProgress(1);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            notificarAdaptadores();
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
+
+
+
 }

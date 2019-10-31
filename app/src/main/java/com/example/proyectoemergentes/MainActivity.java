@@ -18,6 +18,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.transition.FragmentTransitionSupport;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -122,20 +123,32 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 switch (index){
                     case 0:
-                        transaction.replace(R.id.nav_host_fragment, new HomeFragment());
+                        transaction.replace(R.id.nav_host_fragment, new HomeFragment(),"HOMETAG");
+                        transaction.addToBackStack("HOMETAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_home));
+                        transaction.commit();
                         break;
                     case 1:
-                        transaction.replace(R.id.nav_host_fragment, new LugaresFragment());
+                        transaction.replace(R.id.nav_host_fragment, new LugaresFragment(),"LUGARESTAG");
+                        transaction.addToBackStack("LUGARESTAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_places));
+                        transaction.commit();
                         break;
                     case 2:
-                        transaction.replace(R.id.nav_host_fragment, new FavoritosFragment());
+                        transaction.replace(R.id.nav_host_fragment, new FavoritosFragment(),"FAVTAG");
+                        transaction.addToBackStack("FAVTAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_favoritos));
+                        transaction.commit();
                         break;
                     case 3:
-                        transaction.replace(R.id.nav_host_fragment, new PerfilFragment());
+                        transaction.replace(R.id.nav_host_fragment, new PerfilFragment(),"PERFILTAG");
+                        transaction.addToBackStack("PERFILTAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_usuario));
+                        transaction.commit();
                         break;
 
                 }
-                transaction.commit();
+
             }
 
             @Override
