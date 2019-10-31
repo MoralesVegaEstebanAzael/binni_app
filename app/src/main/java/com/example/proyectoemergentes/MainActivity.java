@@ -18,6 +18,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.transition.FragmentTransitionSupport;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -120,22 +121,40 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStartTabSelected(NavigationTabBar.Model model, int index) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+               /// FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                //ft.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+                //ft.add(R.id.primaryLayout, fragment, tag);
+
+               // ft.commit();
                 switch (index){
                     case 0:
-                        transaction.replace(R.id.nav_host_fragment, new HomeFragment());
+                        transaction.replace(R.id.nav_host_fragment, new HomeFragment(),"HOMETAG");
+                        transaction.addToBackStack("HOMETAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_home));
+                        transaction.commit();
                         break;
                     case 1:
-                        transaction.replace(R.id.nav_host_fragment, new LugaresFragment());
+                        transaction.replace(R.id.nav_host_fragment, new LugaresFragment(),"LUGARESTAG");
+                        transaction.addToBackStack("LUGARESTAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_places));
+                        transaction.commit();
                         break;
                     case 2:
-                        transaction.replace(R.id.nav_host_fragment, new FavoritosFragment());
+                        transaction.replace(R.id.nav_host_fragment, new FavoritosFragment(),"FAVTAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_favoritos));
+                        transaction.addToBackStack("FAVTAG");
+                        transaction.commit();
                         break;
                     case 3:
-                        transaction.replace(R.id.nav_host_fragment, new PerfilFragment());
+                        transaction.replace(R.id.nav_host_fragment, new PerfilFragment(),"PERFILTAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_usuario));
+                        transaction.addToBackStack("PERFILTAG");
+                        transaction.commit();
                         break;
 
                 }
-                transaction.commit();
+
             }
 
             @Override
