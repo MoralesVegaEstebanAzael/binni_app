@@ -45,7 +45,6 @@ import com.example.proyectoemergentes.pojos.Anuncio;
 import com.example.proyectoemergentes.pojos.Lugar;
 import com.google.android.material.tabs.TabLayout;
 
-import org.apache.http.util.ByteArrayBuffer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

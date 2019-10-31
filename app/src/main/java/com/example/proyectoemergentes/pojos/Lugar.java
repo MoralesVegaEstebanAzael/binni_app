@@ -25,6 +25,15 @@ public class Lugar {
         this.imagen = imagen;
     }
 
+    public Lugar(String id, String nombre, String  lat, String lng){
+        this.id = id;
+        this.nombre=nombre;
+        this.lat=lat;
+        this.lng=lng;
+    }
+
+
+
     public String getId() {
         return id;
     }
