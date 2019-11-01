@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,8 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SplashActivity"
-                    android:theme="@style/SplashTheme">
+        <activity
+            android:theme="@style/CustomActionBar"
+            android:name=".LugarActivity"></activity>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,12 +28,11 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main2">
+            android:label="@string/title_activity_main2"></activity>
 
-        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyApz7mfXJ7mJfRhbjUvW5Lygt7HFXqBbdo"></meta-data>
+            android:value="AIzaSyApz7mfXJ7mJfRhbjUvW5Lygt7HFXqBbdo" />
     </application>
 
 </manifest>

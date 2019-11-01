@@ -2,12 +2,14 @@ package com.example.proyectoemergentes.ui.perfil;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
@@ -43,18 +46,18 @@ public class PerfilFragment extends Fragment {
         imageViewEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ActivityCompat.requestPermissions(
+               /* ActivityCompat.requestPermissions(
                         getActivity(),
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_CODE_GALLERY
-                );
+                );*/
                 cargarImagen();
             }
         });
         return root;
     }
 
-    /*@Override
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode==REQUEST_CODE_GALLERY){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -62,12 +65,12 @@ public class PerfilFragment extends Fragment {
                 intent.setType("image/");
                 startActivityForResult(intent.createChooser(intent,"Seleccione la app"),10);
             }else{
-                Toast.makeText(getContext(),R.string.perfil_permiso_galeria,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),R.string.perfil_permiso_galeria, Toast.LENGTH_SHORT).show();
             }
             return;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }*/
+    }
    private void cargarImagen(){
        Intent intent= new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
        intent.setType("image/");
@@ -100,16 +103,18 @@ public class PerfilFragment extends Fragment {
         imageViewEdit = view.findViewById(R.id.userEditAvatar);
         textViewUser = view.findViewById(R.id.textViewUserName);
         textViewEmail = view.findViewById(R.id.textViewUserEmail);
-        Cursor cursor = MainActivity.dataBaseHandler
-                .select("SELECT * FROM usuario WHERE id = 1");
-        while(cursor.moveToNext()){
-            byte[] image = cursor.getBlob(3);
-            if(image!=null){
-                Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                imageViewAvatar.setImageBitmap(bitmap);
-            }
-        }
+       // new Thread(new Runnable() {
+         //   public void run() {
+                Cursor cursor = MainActivity.dataBaseHandler
+                        .getImagen("SELECT * FROM imagen WHERE idimagen = 1");
+                while(cursor.moveToNext()){
+                    byte[] image = cursor.getBlob(1);
+                    if(image!=null){
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                        imageViewAvatar.setImageBitmap(bitmap);
+                    }
+                }
+           // }
+        //}).start();
     }
-
-
 }

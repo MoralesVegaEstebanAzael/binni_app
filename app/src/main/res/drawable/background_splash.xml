@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="match_parent" android:layout_width="match_parent">
-    <item android:drawable="@drawable/screen">
+    <item android:drawable="@drawable/s_screen">
     </item>
 </layer-list>

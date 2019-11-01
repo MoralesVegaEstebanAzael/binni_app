@@ -61,10 +61,8 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
 
     class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
-
         View itemView;
         ImageView imageViewBackground;
-
         public SliderAdapterVH(View itemView) {
             super(itemView);
             imageViewBackground = itemView.findViewById(R.id.imagen_view);

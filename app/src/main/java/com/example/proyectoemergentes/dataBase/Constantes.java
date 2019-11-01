@@ -24,7 +24,7 @@ public class Constantes {
             + " ("+FAVORITOS_LUGAR+ " TEXT)";
     //tabla imagen
     public static final String CREATE_TABLE_IMAGEN = "CREATE TABLE  IF NOT EXISTS imagen " +
-            "(imagen BLOB)";
+            "(idimagen STRING PRIMARY KEY,imagen BLOB)";
 
     //tabla anuncio
     public static final String CREATE_TABLE_ANUNCIO = "CREATE TABLE IF NOT EXISTS anuncio(" +

@@ -14,7 +14,6 @@
         app:ntb_active_color="#fff"
         app:ntb_animation_duration="400"
         app:ntb_bg_color="@color/ntb_bg_color"
-        app:ntb_corners_radius="5dp"
         app:ntb_icon_size_fraction="0.4"
         app:ntb_inactive_color="@color/inactiveColor"
         app:ntb_preview_colors="@array/bg"
@@ -37,7 +36,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="47dp"
         app:navGraph="@navigation/mobile_navigation" />
 
 </FrameLayout>

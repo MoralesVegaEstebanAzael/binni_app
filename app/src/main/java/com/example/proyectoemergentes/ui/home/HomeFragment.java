@@ -147,13 +147,13 @@ public class HomeFragment extends Fragment{
                 AsyncTaskLoadDB asyncTaskLoadDB = new AsyncTaskLoadDB();
                 asyncTaskLoadDB.execute();
 
-                Fragment frg = null;
+               /* Fragment frg = null;
                 frg = getActivity().getSupportFragmentManager().findFragmentByTag("HOMETAG");
                                final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.detach(frg);
                 ft.attach(frg);
                 ft.commit();
-
+*/
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment{
             public void onResponse(String response) {
                 try {
                     JSONArray jsonArray = new JSONArray(response);
-                    Log.i("RESPUESTA",""+jsonArray);
+                    //Log.i("RESPUESTA",""+jsonArray);
                     addLugar(jsonArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -287,8 +287,6 @@ public class HomeFragment extends Fragment{
                 }
             }
         }).start();
-
-
     }
 
     private void lugaresFromLocalDB(String sql,ArrayList arrayList,AdapterLugar adapterLugar){

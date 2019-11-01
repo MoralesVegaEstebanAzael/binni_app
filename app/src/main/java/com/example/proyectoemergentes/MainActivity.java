@@ -6,7 +6,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
+import com.example.proyectoemergentes.pojos.Lugar;
 import com.example.proyectoemergentes.ui.lugares.LugaresFragment;
 import com.example.proyectoemergentes.ui.home.HomeFragment;
 import com.example.proyectoemergentes.ui.favoritos.FavoritosFragment;
@@ -20,8 +22,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.transition.FragmentTransitionSupport;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import devlight.io.library.ntb.NavigationTabBar;
 
@@ -64,19 +70,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void add(){
-        Drawable d = getResources().getDrawable(R.drawable.avatar);
-        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] bitmapdata = stream.toByteArray();
-        dataBaseHandler.addUsuario("1","Azael Morales",
-                "azaelmorales@hotmail.com",bitmapdata);
-
+        new Thread(new Runnable() {
+            public void run() {
+                Drawable d = getResources().getDrawable(R.drawable.avatar);
+                Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bitmapdata = stream.toByteArray();
+                dataBaseHandler.addImagen(bitmapdata);
+            }
+        }).start();
     }
 
     public void tabbar(){
         final String[] colors= getResources().getStringArray(R.array.colorful);
         navigationTabBar = findViewById(R.id.ntb);
+
+
         ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
@@ -104,10 +114,10 @@ public class MainActivity extends AppCompatActivity {
         );
 
         navigationTabBar.setModels(models);
+        navigationTabBar.setModelIndex(0);
         navigationTabBar.setBadgeSize(10);
         navigationTabBar.setIsTinted(true);
         navigationTabBar.setIsSwiped(true);
-        navigationTabBar.onPageSelected(1);
         navigationTabBar.setTitleMode(NavigationTabBar.TitleMode.ACTIVE);
         navigationTabBar.setBadgePosition(NavigationTabBar.BadgePosition.CENTER);
         navigationTabBar.setIsBadged(true);
@@ -116,44 +126,33 @@ public class MainActivity extends AppCompatActivity {
         navigationTabBar.setBadgeTitleColor(Color.WHITE);
         navigationTabBar.setTitleSize(25);
 
-
         navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
             @Override
             public void onStartTabSelected(NavigationTabBar.Model model, int index) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-               /// FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                //ft.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-                //ft.add(R.id.primaryLayout, fragment, tag);
-
-               // ft.commit();
                 switch (index){
                     case 0:
                         transaction.replace(R.id.nav_host_fragment, new HomeFragment(),"HOMETAG");
                         transaction.addToBackStack("HOMETAG");
                         getSupportActionBar().setTitle(getString(R.string.title_home));
-                        transaction.commit();
                         break;
                     case 1:
                         transaction.replace(R.id.nav_host_fragment, new LugaresFragment(),"LUGARESTAG");
                         transaction.addToBackStack("LUGARESTAG");
                         getSupportActionBar().setTitle(getString(R.string.title_places));
-                        transaction.commit();
                         break;
                     case 2:
                         transaction.replace(R.id.nav_host_fragment, new FavoritosFragment(),"FAVTAG");
-                        getSupportActionBar().setTitle(getString(R.string.title_favoritos));
                         transaction.addToBackStack("FAVTAG");
-                        transaction.commit();
+                        getSupportActionBar().setTitle(getString(R.string.title_favoritos));
                         break;
                     case 3:
                         transaction.replace(R.id.nav_host_fragment, new PerfilFragment(),"PERFILTAG");
-                        getSupportActionBar().setTitle(getString(R.string.title_usuario));
                         transaction.addToBackStack("PERFILTAG");
-                        transaction.commit();
+                        getSupportActionBar().setTitle(getString(R.string.title_usuario));
                         break;
-
                 }
+                transaction.commit();
 
             }
 
@@ -163,20 +162,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    /*
-    *  <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
-    * */
-
 }

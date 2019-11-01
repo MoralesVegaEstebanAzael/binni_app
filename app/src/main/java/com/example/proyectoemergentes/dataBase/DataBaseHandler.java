@@ -109,7 +109,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public void updateImagenUsuario(byte[] imagen){
         SQLiteDatabase database = getWritableDatabase();
-        String query = "UPDATE usuario set imagen = ? WHERE id = '1'";
+
+        String query = "UPDATE imagen set imagen = ? WHERE idimagen = '1'";
         SQLiteStatement statement = database.compileStatement(query);
         statement.clearBindings();
         statement.bindBlob(1,imagen);
@@ -155,12 +156,19 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
     public void addImagen(byte[] imagen){
         SQLiteDatabase database = getWritableDatabase();
-        String query = "INSERT INTO imagen VALUES(?)";
+        String query = "INSERT OR IGNORE INTO imagen VALUES(?,?)";
         SQLiteStatement statement = database.compileStatement(query);
         statement.clearBindings();
-        statement.bindBlob(1,imagen);
+        statement.bindString(1,"1");
+        statement.bindBlob(2,imagen);
         statement.executeInsert();
     }
+
+    public Cursor getImagen(String sql){
+        SQLiteDatabase database = getReadableDatabase();
+        return database.rawQuery(sql,null);
+    }
+
     public boolean isEmptyTableImagen(){
         database = getReadableDatabase();
         String query = String.format("SELECT *  FROM imagen");
