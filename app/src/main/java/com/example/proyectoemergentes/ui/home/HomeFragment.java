@@ -84,12 +84,14 @@ public class HomeFragment extends Fragment{
         View  root  = inflater.inflate(R.layout.fragment_home, container, false);
 
         init(root);
-        //initSlider(root);
+        initSlider(root);
 
         //asyn task cargar desde base de datos local
         AsyncTaskLoadDB asyncTaskLoadDB = new AsyncTaskLoadDB();
         asyncTaskLoadDB.execute();
 
+//        AsyntaskLoadAnuncios asyntaskLoadAnuncios = new AsyntaskLoadAnuncios();
+//        asyntaskLoadAnuncios.execute();
         return root;
     }
 
@@ -100,8 +102,9 @@ public class HomeFragment extends Fragment{
         adaptSlider = new SliderAdapter(getContext(),listAnuncios);
         viewPager.setAdapter(adaptSlider);
         indicator.setupWithViewPager(viewPager,true);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new SliderTimer(), 6000, 4000);
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new SliderTimer(), 6000, 4000);
+        //swipeRefreshListener(view);
     }
 
     public void init(View view){
@@ -143,9 +146,14 @@ public class HomeFragment extends Fragment{
             public void onRefresh() {
 
                 apiLugares(getString(R.string.url_api_lugares_categoria));
-
+                apiAnuncios(getString(R.string.url_api_anuncios));
                 AsyncTaskLoadDB asyncTaskLoadDB = new AsyncTaskLoadDB();
                 asyncTaskLoadDB.execute();
+
+                AsyntaskLoadAnuncios asyntaskLoadAnuncios = new AsyntaskLoadAnuncios();
+                asyntaskLoadAnuncios.execute();
+
+
 
                /* Fragment frg = null;
                 frg = getActivity().getSupportFragmentManager().findFragmentByTag("HOMETAG");
@@ -168,16 +176,22 @@ public class HomeFragment extends Fragment{
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '1'",listZonasArq,adapterLugarZonasArq);
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '2'",listTemplos,adapterLugarTemplos);
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '3'",listMuseos,adapterLugarMuseos);
-      //  anunciosFromLocalDB("SELECT idlugar,nombre_lugar,imagen FROM anuncio",listAnuncios,adaptSlider);
+
+    }
+
+    public void cargarDatosLocalDBAnuncios(){
+        anunciosFromLocalDB("SELECT idlugar,nombre_lugar,imagen FROM anuncio",listAnuncios,adaptSlider);
     }
 
     private void notificarAdaptadores(){
         adapterLugarMuseos.notifyDataSetChanged();
         adapterLugarTemplos.notifyDataSetChanged();
         adapterLugarZonasArq.notifyDataSetChanged();
-        //adaptSlider.notifyDataSetChanged();
     }
 
+    private void notificarAdaptSlider(){
+        adaptSlider.notifyDataSetChanged();
+    }
     private void apiLugares(String url){
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -224,23 +238,51 @@ public class HomeFragment extends Fragment{
         });
         requestQueue.add(stringRequest);
     }
-
+    JSONArray jsonA;
     private void addAnuncios(JSONArray jsonArray) throws JSONException{
-        Anuncio anuncio;
-        listAnuncios.clear();
-        for (int i=0;i<jsonArray.length();i++){
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            anuncio = new Anuncio(
-                    jsonObject.optString("idanuncio"),
-                    jsonObject.optString("idsocio"),
-                    jsonObject.optString("idlugar"),
-                    jsonObject.optString("fecha_inicio"),
-                    jsonObject.optString("duracion"),
-                    jsonObject.optString("idcategoria"),
-                    jsonObject.optString("nombre_lugar"),
-                    jsonObject.optString("url"));
-            listAnuncios.add(anuncio);
-        }
+        jsonA = jsonArray;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Anuncio anuncio;
+                byte[] bytes = null;
+                listAnuncios.clear();
+                for (int i=0;i<jsonA.length();i++){
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = jsonA.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    anuncio = new Anuncio(
+                            jsonObject.optString("idanuncio"),
+                            jsonObject.optString("idsocio"),
+                            jsonObject.optString("idlugar"),
+                            jsonObject.optString("fecha_inicio"),
+                            jsonObject.optString("duracion"),
+                            jsonObject.optString("idcategoria"),
+                            jsonObject.optString("nombre_lugar"),
+                            jsonObject.optString("url"));
+                    listAnuncios.add(anuncio);
+
+                    try {
+                        bytes = Glide.with(getContext())
+                                .as(byte[].class)
+                                .load(anuncio.getUrl())
+                                .submit()
+                                .get();
+                    }catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    MainActivity.dataBaseHandler.addAnuncio(anuncio.getId(),anuncio.getIdSocio(),anuncio.getIdLugar(),
+                            anuncio.getFechaInicio(),anuncio.getDuracion(),anuncio.getIdCategoria(),anuncio.getNombreLugar(),bytes);
+
+                }
+            }
+        }).start();
+
     }
 
     JSONArray json;
@@ -313,7 +355,6 @@ public class HomeFragment extends Fragment{
             anuncio = new Anuncio(id,nombreLugar,image);
             arrayList.add(anuncio);
         }
-       // adapterAnuncio.notifyDataSetChanged();
     }
 
     @Override
@@ -327,28 +368,28 @@ public class HomeFragment extends Fragment{
        // ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
-    private class SliderTimer extends TimerTask {
-        private Handler mHandler = new Handler(Looper.getMainLooper());
-
-        @Override
-        public void run() {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-
-                    if(adaptSlider.getCount() > 0) {
-                        if (viewPager.getCurrentItem() < adaptSlider.getCount() - 1) {
-                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-
-                        } else {
-                            viewPager.setCurrentItem(0, true);
-                        }
-                    }
-                }
-            });
-
-        }
-    }
+//    private class SliderTimer extends TimerTask {
+//        private Handler mHandler = new Handler(Looper.getMainLooper());
+//
+//        @Override
+//        public void run() {
+//            mHandler.post(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    if(adaptSlider.getCount() > 0) {
+//                        if (viewPager.getCurrentItem() < adaptSlider.getCount() - 1) {
+//                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+//
+//                        } else {
+//                            viewPager.setCurrentItem(0, true);
+//                        }
+//                    }
+//                }
+//            });
+//
+//        }
+//    }
 
 
     //Proceso para obtener datos locales
@@ -377,6 +418,27 @@ public class HomeFragment extends Fragment{
         }
     }
 
+    private class AsyntaskLoadAnuncios extends AsyncTask<Void,Integer,Boolean>{
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            cargarDatosLocalDBAnuncios();
+            //publishProgress(1);
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+//            super.onPostExecute(aBoolean);
+            notificarAdaptSlider();
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
 
 
 }

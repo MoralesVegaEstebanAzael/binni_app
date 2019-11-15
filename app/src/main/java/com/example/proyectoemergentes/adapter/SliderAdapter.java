@@ -56,7 +56,6 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
                 .thumbnail()
                 .into(viewHolder.imageViewBackground);
         viewHolder.imageViewBackground.setScaleType(ImageView.ScaleType.FIT_XY);
-        notifyDataSetChanged();
     }
 
 
