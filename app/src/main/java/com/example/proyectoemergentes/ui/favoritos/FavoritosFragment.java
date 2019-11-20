@@ -1,5 +1,6 @@
 package com.example.proyectoemergentes.ui.favoritos;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyectoemergentes.CodigoQR;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
@@ -108,6 +110,8 @@ public class FavoritosFragment extends Fragment {
         int id = item.getItemId();
         if(id==R.id.action_qr_code){
             Toast.makeText(getContext(),"CÓDIGO QR",Toast.LENGTH_SHORT).show();
+            Intent intent= new Intent(getActivity(), CodigoQR.class);
+            startActivityForResult(intent,0);
         }
         return super.onOptionsItemSelected(item);
     }
