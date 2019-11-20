@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.proyectoemergentes">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,25 +10,42 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".LoginActivity">
+
+        </activity>
+        <activity android:name=".CodigoQR" />
         <activity
-            android:theme="@style/CustomActionBar"
-            android:name=".LugarActivity"></activity>
+            android:name=".LugarActivity"
+            android:theme="@style/CustomActionBar" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
+
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main2" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main2"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyApz7mfXJ7mJfRhbjUvW5Lygt7HFXqBbdo" />
     </application>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>
