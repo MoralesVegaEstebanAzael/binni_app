@@ -1,37 +1,44 @@
 package com.example.proyectoemergentes.ui.perfil;
 
-import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.proyectoemergentes.LoginActivity;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_ESTADO_SESION_USUARIO;
+import static com.example.proyectoemergentes.LoginActivity.STRING_PREFERENCES_USUARIO;
 
 
 public class PerfilFragment extends Fragment {
@@ -40,11 +47,41 @@ public class PerfilFragment extends Fragment {
     private TextView textViewUser;
     private TextView textViewEmail;
     final int REQUEST_CODE_GALLERY =999;
+
+    private LinearLayout btnSignOut;
+    private SharedPreferences preferences;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View root = inflater.inflate(R.layout.fragment_perfil, container, false);
         init(root);
+
+        btnSignOut= root.findViewById(R.id.singout);
+
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //LoginActivity.sesion =false;
+                AuthUI.getInstance()
+                        .signOut(getActivity())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                sesionActiva(false);
+                                goMainScreen();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
         imageViewEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +94,18 @@ public class PerfilFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    public void sesionActiva(boolean b){
+        SharedPreferences preferences = getActivity().getSharedPreferences(
+                STRING_PREFERENCES_USUARIO, Context.MODE_PRIVATE);
+        preferences.edit().putBoolean(PREFERENCES_ESTADO_SESION_USUARIO,b).apply();
+    }
+
+    private void goMainScreen() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override

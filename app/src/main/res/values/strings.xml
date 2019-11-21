@@ -32,4 +32,7 @@
     <string name="accion_eliminar_favorito">Eliminado de favoritos</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of
         the printing and typesetting industry. Lorem Ipsum has beenlso the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+
+    <string name="facebook_application_id" translatable="false">1156050791451314</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1156050791451314</string>
 </resources>
