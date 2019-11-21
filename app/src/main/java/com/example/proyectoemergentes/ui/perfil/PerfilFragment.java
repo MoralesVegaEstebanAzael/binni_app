@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -105,14 +107,25 @@ public class PerfilFragment extends Fragment {
         textViewEmail = view.findViewById(R.id.textViewUserEmail);
        // new Thread(new Runnable() {
          //   public void run() {
-                Cursor cursor = MainActivity.dataBaseHandler
-                        .getImagen("SELECT * FROM imagen WHERE idimagen = 1");
-                while(cursor.moveToNext()){
-                    byte[] image = cursor.getBlob(1);
-                    if(image!=null){
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                        imageViewAvatar.setImageBitmap(bitmap);
+        DataBaseHandler  dataBaseHandler = new DataBaseHandler(getContext());
+                Cursor cursor = dataBaseHandler
+                        .getImagen("SELECT idimagen,imagen FROM imagen WHERE idimagen = 1");
+                if(cursor!=null){
+                    if(cursor!=null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
+                                byte[] image = cursor.getBlob(1);
+                                Log.d("ARRAY", "init: "+image);
+                                if(image!=null){
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                                    imageViewAvatar.setImageBitmap(bitmap);
+                                }
+                            } while (cursor.moveToNext());
+                            cursor.close();
+                        }
                     }
+                }else{
+                    Log.i("Cursor","cursor nulo");
                 }
            // }
         //}).start();
