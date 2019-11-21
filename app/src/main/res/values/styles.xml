@@ -19,5 +19,9 @@
         <item name="titleTextColor">@android:color/black</item>
     </style>
 
+    <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/s_screen</item>
+    </style>
+
 
 </resources>

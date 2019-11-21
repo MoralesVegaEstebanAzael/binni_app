@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "568623150877",
+    "firebase_url": "https://binniapp-3398d.firebaseio.com",
+    "project_id": "binniapp-3398d",
+    "storage_bucket": "binniapp-3398d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568623150877:android:07665c5584371f4db293f4",
+        "android_client_info": {
+          "package_name": "com.example.proyectoemergentes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568623150877-dkq6dubmjsplducietg6se90k66rmhf1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.proyectoemergentes",
+            "certificate_hash": "5f34edaaceeae2a448e46af61ab664cf63f99548"
+          }
+        },
+        {
+          "client_id": "568623150877-5js5agn3v4kpsvqo8gapm7vfbi046so8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0dynQNy_W5220I49j9_y-5fcAzZ7MC4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568623150877-5js5agn3v4kpsvqo8gapm7vfbi046so8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
