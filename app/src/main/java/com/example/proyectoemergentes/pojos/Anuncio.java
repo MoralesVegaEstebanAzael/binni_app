@@ -1,12 +1,20 @@
 package com.example.proyectoemergentes.pojos;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Anuncio {
+    @SerializedName("idlugar")
     private String id;
+    @SerializedName("idsocio")
     private String idSocio;
+    @SerializedName("idlugar")
     private String idLugar;
+    @SerializedName("fecha_inicio")
     private String fechaInicio;
     private String duracion;
+    @SerializedName("idcategoria")
     private String idCategoria;
+    @SerializedName("nombre_lugar")
     private String nombreLugar;
     private String url;
 
