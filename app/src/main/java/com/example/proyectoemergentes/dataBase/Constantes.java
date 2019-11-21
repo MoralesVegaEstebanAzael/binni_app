@@ -13,7 +13,7 @@ public class Constantes {
     //tabla lugar
     public static final String CREATE_TABLE_LUGAR="CREATE TABLE IF NOT EXISTS lugar " +
             "(id STRING PRIMARY KEY, nombre STRING, lat STRING,lng STRING,categoria STRING" +
-            ",descripcion STRING,imagen BLOB)";
+            ",descripcion STRING,imagen BLOB,string precio)";
     //tabla categoria
     public static  final String CREATE_TABLE_CATEGORIA ="CREATE TABLE IF NOT EXISTS categoria " +
             "(id STRING PRIMARY KEY, nombre STRING)";

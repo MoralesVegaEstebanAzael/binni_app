@@ -51,11 +51,12 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         //aza code
         final Anuncio imagen = imagenArrayList.get(position);
         byte[] anuncioImagen = imagen.getImagen();
-        Glide.with(viewHolder.itemView)
+        Glide.with(context)
                 .load(anuncioImagen)
                 .thumbnail()
                 .into(viewHolder.imageViewBackground);
         viewHolder.imageViewBackground.setScaleType(ImageView.ScaleType.FIT_XY);
+
     }
 
 

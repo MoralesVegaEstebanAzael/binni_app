@@ -9,8 +9,9 @@ public class Lugar {
     private String descripcion;
     private String image;
     private byte[] imagen;
+    private String precio;
     public Lugar(String id, String nombre, String lat, String lng,
-                 String categoria, String descripcion, String image) {
+                 String categoria, String descripcion, String image,String precio) {
         this.id = id;
         this.nombre = nombre;
         this.lat = lat;
@@ -18,6 +19,7 @@ public class Lugar {
         this.idCategoria = categoria;
         this.descripcion = descripcion;
         this.image = image;
+        this.precio = precio;
     }
     public Lugar(String id,String nombre,byte[] imagen ){
         this.id = id;
@@ -25,11 +27,12 @@ public class Lugar {
         this.imagen = imagen;
     }
 
-    public Lugar(String id, String nombre, String  lat, String lng){
+    public Lugar(String id, String nombre, String  lat, String lng,String idCategoria){
         this.id = id;
         this.nombre=nombre;
         this.lat=lat;
         this.lng=lng;
+        this.idCategoria = idCategoria;
     }
 
 
@@ -92,5 +95,13 @@ public class Lugar {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
     }
 }

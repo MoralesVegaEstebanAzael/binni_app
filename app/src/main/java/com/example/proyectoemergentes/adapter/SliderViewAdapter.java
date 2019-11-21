@@ -11,7 +11,6 @@ import java.util.Queue;
 
 public abstract class SliderViewAdapter<VH extends SliderViewAdapter.ViewHolder> extends PagerAdapter {
 
-    //Default View holder class
     public static abstract class ViewHolder {
         public final View itemView;
 
@@ -28,7 +27,7 @@ public abstract class SliderViewAdapter<VH extends SliderViewAdapter.ViewHolder>
         VH viewHolder = destroyedItems.poll();
 
         if (viewHolder != null) {
-            // Re-add existing view before rendering so that we can make change inside getView()
+
             container.addView(viewHolder.itemView);
             onBindViewHolder(viewHolder, position);
         } else {
@@ -64,6 +63,7 @@ public abstract class SliderViewAdapter<VH extends SliderViewAdapter.ViewHolder>
      * @param position item position
      */
     public abstract void onBindViewHolder(VH viewHolder, int position);
+
 
 
 }
