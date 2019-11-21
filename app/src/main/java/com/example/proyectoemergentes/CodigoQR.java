@@ -1,35 +1,18 @@
 package com.example.proyectoemergentes;
 
-import androidx.annotation.Nullable;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Camera;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseArray;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.webkit.URLUtil;
-import android.widget.Toast;
-
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.zxing.Result;
-
-import java.io.IOException;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -50,7 +33,7 @@ public class CodigoQR extends AppCompatActivity implements ZXingScannerView.Resu
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (checkPermission()){
-                Toast.makeText(CodigoQR.this, "Persmisos condedidos", Toast.LENGTH_LONG).show();
+                Toast.makeText(CodigoQR.this, "Persmisos concedidos", Toast.LENGTH_LONG).show();
 
             }else {
                 requestPermision();
@@ -132,7 +115,7 @@ public class CodigoQR extends AppCompatActivity implements ZXingScannerView.Resu
     @Override
     public void handleResult(final Result result) {
         final String scanResult= result.getText();
-        Log.d("QRCodeScanner", result.getText());
+        /*Log.d("QRCodeScanner", result.getText());
         Log.d("QRCodeScanner", result.getBarcodeFormat().toString());
 
        AlertDialog.Builder builder= new AlertDialog.Builder(this);
@@ -153,7 +136,11 @@ public class CodigoQR extends AppCompatActivity implements ZXingScannerView.Resu
         });
         builder.setMessage(result.getText());
         AlertDialog alert= builder.create();
-        alert.show();
+        alert.show();*/
 
+        Intent intent = new Intent (this, LugarActivity.class);
+        intent.putExtra("ID_LUGAR",scanResult);
+        startActivity(intent);
+        this.finish();
     }
 }

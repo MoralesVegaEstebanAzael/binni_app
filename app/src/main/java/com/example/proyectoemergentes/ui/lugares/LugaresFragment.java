@@ -1,29 +1,19 @@
 package com.example.proyectoemergentes.ui.lugares;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.proyectoemergentes.CodigoQR;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
-import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.pojos.Lugar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -153,22 +143,6 @@ public class LugaresFragment extends Fragment implements OnMapReadyCallback{
 
 
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_menu,menu);
-        menu.findItem(R.id.action_qr_code).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if(id==R.id.action_qr_code){
-            Toast.makeText(getContext(),"CÓDIGO QR",Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent(getActivity(), CodigoQR.class);
-            startActivityForResult(intent,0);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 
 }

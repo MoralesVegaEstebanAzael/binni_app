@@ -1,7 +1,5 @@
 package com.example.proyectoemergentes.ui.perfil;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,14 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,9 +20,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.proyectoemergentes.LoginActivity;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,7 +38,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_CORREO_USUARIO;
 import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_ESTADO_SESION_USUARIO;
+import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_NOMBRE_USUARIO;
 import static com.example.proyectoemergentes.LoginActivity.STRING_PREFERENCES_USUARIO;
 
 
@@ -48,9 +51,7 @@ public class PerfilFragment extends Fragment {
     private TextView textViewUser;
     private TextView textViewEmail;
     final int REQUEST_CODE_GALLERY =999;
-
     private LinearLayout btnSignOut;
-    private SharedPreferences preferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,7 +100,7 @@ public class PerfilFragment extends Fragment {
 
     public void sesionActiva(boolean b){
         SharedPreferences preferences = getActivity().getSharedPreferences(
-                STRING_PREFERENCES_USUARIO, Context.MODE_PRIVATE);
+                STRING_PREFERENCES_USUARIO, MODE_PRIVATE);
         preferences.edit().putBoolean(PREFERENCES_ESTADO_SESION_USUARIO,b).apply();
     }
 
@@ -151,22 +152,50 @@ public class PerfilFragment extends Fragment {
     }
 
     private void init(View view){
+        SharedPreferences preferences = getActivity().getSharedPreferences(STRING_PREFERENCES_USUARIO,MODE_PRIVATE);
         imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
         imageViewEdit = view.findViewById(R.id.userEditAvatar);
         textViewUser = view.findViewById(R.id.textViewUserName);
         textViewEmail = view.findViewById(R.id.textViewUserEmail);
+
+        textViewEmail.setText(preferences.getString(PREFERENCES_CORREO_USUARIO,""));
+        textViewUser.setText(preferences.getString(PREFERENCES_NOMBRE_USUARIO, ""));
        // new Thread(new Runnable() {
          //   public void run() {
-                Cursor cursor = MainActivity.dataBaseHandler
-                        .getImagen("SELECT * FROM imagen WHERE idimagen = 1");
-                while(cursor.moveToNext()){
-                    byte[] image = cursor.getBlob(1);
-                    if(image!=null){
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                        imageViewAvatar.setImageBitmap(bitmap);
+        DataBaseHandler  dataBaseHandler = new DataBaseHandler(getContext());
+                Cursor cursor = dataBaseHandler
+                        .getImagen("SELECT idimagen,imagen FROM imagen WHERE idimagen = 1");
+                if(cursor!=null){
+                    if(cursor!=null && cursor.getCount() > 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
+                                byte[] image = cursor.getBlob(1);
+                                Log.d("ARRAY", "init: "+image);
+                                if(image!=null){
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                                    imageViewAvatar.setImageBitmap(bitmap);
+                                }
+                            } while (cursor.moveToNext());
+                            cursor.close();
+                        }
                     }
+                }else{
+                    Log.i("Cursor","cursor nulo");
                 }
            // }
         //}).start();
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu,menu);
+        menu.findItem(R.id.action_qr_code).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

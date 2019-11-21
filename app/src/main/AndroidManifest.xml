@@ -10,9 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".ui.FullScreenGaleriaActivity"></activity>
 
-        </activity>
         <activity android:name=".CodigoQR" />
         <activity
             android:name=".LugarActivity"
@@ -23,7 +22,7 @@
 
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_main2" >
 
             <intent-filter>
@@ -32,20 +31,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+           android:name=".MainActivity"
+            android:label="@string/title_activity_main2" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyApz7mfXJ7mJfRhbjUvW5Lygt7HFXqBbdo" />
     </application>
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

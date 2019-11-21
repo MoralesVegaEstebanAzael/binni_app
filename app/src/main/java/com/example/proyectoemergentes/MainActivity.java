@@ -12,9 +12,11 @@ import com.example.proyectoemergentes.pojos.Lugar;
 import com.example.proyectoemergentes.ui.lugares.LugaresFragment;
 import com.example.proyectoemergentes.ui.home.HomeFragment;
 import com.example.proyectoemergentes.ui.favoritos.FavoritosFragment;
+import com.example.proyectoemergentes.ui.paquetes.PaquetesFragment;
 import com.example.proyectoemergentes.ui.perfil.PerfilFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -41,14 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //creacion de la base de datos local
          dataBaseHandler = new DataBaseHandler(this);
-
-
         // attaching bottom sheet behaviour - hide / show on scroll
-
-
-
         setContentView(R.layout.activity_main);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+        /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_lugares,
                 R.id.navigation_favoritos,R.id.navigation_perfil)
                 .build();
@@ -57,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.nav_host_fragment, new HomeFragment());
         transaction.commit();
-
+*/
         /*BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -102,6 +99,12 @@ public class MainActivity extends AppCompatActivity {
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_paquete),
+                        Color.parseColor(colors[2])
+                ).title(getString(R.string.title_paquetes)).build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_favorito),
                         Color.parseColor(colors[2])
                 ).title(getString(R.string.title_favoritos)).build()
@@ -142,11 +145,16 @@ public class MainActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle(getString(R.string.title_places));
                         break;
                     case 2:
+                        transaction.replace(R.id.nav_host_fragment, new PaquetesFragment(),"PAQUETETAG");
+                        transaction.addToBackStack("PAQUETETAG");
+                        getSupportActionBar().setTitle(getString(R.string.title_paquetes));
+                        break;
+                    case 3:
                         transaction.replace(R.id.nav_host_fragment, new FavoritosFragment(),"FAVTAG");
                         transaction.addToBackStack("FAVTAG");
                         getSupportActionBar().setTitle(getString(R.string.title_favoritos));
                         break;
-                    case 3:
+                    case 4:
                         transaction.replace(R.id.nav_host_fragment, new PerfilFragment(),"PERFILTAG");
                         transaction.addToBackStack("PERFILTAG");
                         getSupportActionBar().setTitle(getString(R.string.title_usuario));
@@ -162,4 +170,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
 }
