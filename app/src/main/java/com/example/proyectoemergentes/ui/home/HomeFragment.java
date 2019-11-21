@@ -1,17 +1,20 @@
 package com.example.proyectoemergentes.ui.home;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,9 +28,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.proyectoemergentes.CodigoQR;
 import com.example.proyectoemergentes.MainActivity;
-import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.adapter.SliderAdapter;
 import com.example.proyectoemergentes.pager.AutoScrollViewPager;
 import com.example.proyectoemergentes.pojos.Anuncio;
@@ -39,8 +43,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 public class HomeFragment extends Fragment{
@@ -409,5 +411,25 @@ public class HomeFragment extends Fragment{
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu,menu);
+        menu.findItem(R.id.action_qr_code).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.action_qr_code){
+            Intent intent= new Intent(getActivity(), CodigoQR.class);
+            startActivityForResult(intent,0);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

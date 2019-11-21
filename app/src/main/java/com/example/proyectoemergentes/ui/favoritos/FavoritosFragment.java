@@ -1,30 +1,22 @@
 package com.example.proyectoemergentes.ui.favoritos;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyectoemergentes.CodigoQR;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.pojos.Lugar;
-import com.example.proyectoemergentes.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 
@@ -93,27 +85,6 @@ public class FavoritosFragment extends Fragment {
             arrayRecentPlaces.add(lugar);
         }
 
-    }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        super.onCreate(savedInstanceState);
-    }
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_menu,menu);
-        menu.findItem(R.id.action_qr_code).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if(id==R.id.action_qr_code){
-            Toast.makeText(getContext(),"CÓDIGO QR",Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent(getActivity(), CodigoQR.class);
-            startActivityForResult(intent,0);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 
