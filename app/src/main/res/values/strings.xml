@@ -30,6 +30,10 @@
     <string name="favoritos_lugares">Mis lugares</string>
     <string name="accion_agregar_favorito">Agregado a favoritos</string>
     <string name="accion_eliminar_favorito">Eliminado de favoritos</string>
+    <string name="lugar_ubicacion">Ubicación</string>
+    <string name="lugar_precio">Precio</string>
+    <string name="lugar_galeria">Galeria</string>
+    <string name="lugar_descripcion">Descripción</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of
         the printing and typesetting industry. Lorem Ipsum has beenlso the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
 

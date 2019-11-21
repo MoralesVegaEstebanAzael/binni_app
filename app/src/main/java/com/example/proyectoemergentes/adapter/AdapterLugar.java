@@ -2,30 +2,21 @@ package com.example.proyectoemergentes.adapter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.NotificationTarget;
 import com.example.proyectoemergentes.LugarActivity;
-import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.example.proyectoemergentes.pojos.Lugar;
@@ -107,6 +98,8 @@ public class AdapterLugar extends RecyclerView.Adapter<AdapterLugar.MyViewHolder
             @Override
             public void onClick(View view) {
                // Toast.makeText(context,"Lanzar activity",Toast.LENGTH_SHORT).show();
+
+
                 Intent intent = new Intent (context, LugarActivity.class);
                 intent.putExtra("ID_LUGAR",lugar.getId());
                 intent.putExtra("NOMBRE_LUGAR",lugar.getNombre());

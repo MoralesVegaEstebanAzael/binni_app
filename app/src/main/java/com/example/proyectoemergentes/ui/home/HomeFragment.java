@@ -1,25 +1,21 @@
 package com.example.proyectoemergentes.ui.home;
 
-import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,18 +25,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ByteArrayPool;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.ByteBufferFileLoader;
-import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.request.target.Target;
+import com.example.proyectoemergentes.CodigoQR;
 import com.example.proyectoemergentes.MainActivity;
-import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.adapter.SliderAdapter;
-import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.example.proyectoemergentes.pojos.Anuncio;
 import com.example.proyectoemergentes.pojos.Lugar;
 import com.google.android.material.tabs.TabLayout;
@@ -49,15 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 public class HomeFragment extends Fragment{
@@ -440,5 +424,25 @@ public class HomeFragment extends Fragment{
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu,menu);
+        menu.findItem(R.id.action_qr_code).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.action_qr_code){
+            Intent intent= new Intent(getActivity(), CodigoQR.class);
+            startActivityForResult(intent,0);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

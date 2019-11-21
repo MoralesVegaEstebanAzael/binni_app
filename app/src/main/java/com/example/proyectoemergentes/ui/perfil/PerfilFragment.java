@@ -1,6 +1,5 @@
 package com.example.proyectoemergentes.ui.perfil;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,6 +11,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,7 +38,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_CORREO_USUARIO;
 import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_ESTADO_SESION_USUARIO;
+import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_NOMBRE_USUARIO;
 import static com.example.proyectoemergentes.LoginActivity.STRING_PREFERENCES_USUARIO;
 
 
@@ -47,9 +51,7 @@ public class PerfilFragment extends Fragment {
     private TextView textViewUser;
     private TextView textViewEmail;
     final int REQUEST_CODE_GALLERY =999;
-
     private LinearLayout btnSignOut;
-    private SharedPreferences preferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,7 +100,7 @@ public class PerfilFragment extends Fragment {
 
     public void sesionActiva(boolean b){
         SharedPreferences preferences = getActivity().getSharedPreferences(
-                STRING_PREFERENCES_USUARIO, Context.MODE_PRIVATE);
+                STRING_PREFERENCES_USUARIO, MODE_PRIVATE);
         preferences.edit().putBoolean(PREFERENCES_ESTADO_SESION_USUARIO,b).apply();
     }
 
@@ -150,10 +152,14 @@ public class PerfilFragment extends Fragment {
     }
 
     private void init(View view){
+        SharedPreferences preferences = getActivity().getSharedPreferences(STRING_PREFERENCES_USUARIO,MODE_PRIVATE);
         imageViewAvatar = view.findViewById(R.id.imageViewAvatar);
         imageViewEdit = view.findViewById(R.id.userEditAvatar);
         textViewUser = view.findViewById(R.id.textViewUserName);
         textViewEmail = view.findViewById(R.id.textViewUserEmail);
+
+        textViewEmail.setText(preferences.getString(PREFERENCES_CORREO_USUARIO,""));
+        textViewUser.setText(preferences.getString(PREFERENCES_NOMBRE_USUARIO, ""));
        // new Thread(new Runnable() {
          //   public void run() {
         DataBaseHandler  dataBaseHandler = new DataBaseHandler(getContext());
@@ -178,5 +184,18 @@ public class PerfilFragment extends Fragment {
                 }
            // }
         //}).start();
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu,menu);
+        menu.findItem(R.id.action_qr_code).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
