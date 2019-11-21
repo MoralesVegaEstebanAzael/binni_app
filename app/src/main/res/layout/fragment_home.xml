@@ -21,7 +21,7 @@
 <!--                        android:layout_width="match_parent"-->
 <!--                        android:layout_height="match_parent"-->
 <!--                        android:src="@drawable/anuncio4" />-->
-                    <androidx.viewpager.widget.ViewPager
+                    <com.example.proyectoemergentes.pager.AutoScrollViewPager
                         android:id="@+id/viewPager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>

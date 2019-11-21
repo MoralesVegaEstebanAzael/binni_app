@@ -76,9 +76,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
 
     public void addLugar(String id,String nombre,String lat,String lng,
-                         String categoria,String descripcion,byte[]  imagen){
+                         String categoria,String descripcion,byte[]  imagen,String precio){
         SQLiteDatabase database = getWritableDatabase();
-        String query = "INSERT OR IGNORE INTO lugar VALUES(?, ?, ?,? ,? ,? ,?)";
+        String query = "INSERT OR IGNORE INTO lugar VALUES(?, ?, ?,? ,? ,? ,?,?)";
         SQLiteStatement statement = database.compileStatement(query);
         statement.clearBindings();
         statement.bindString(1,id);
@@ -88,6 +88,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         statement.bindString(5,categoria);
         statement.bindString(6,descripcion);
         statement.bindBlob(7,imagen);
+        statement.bindString(8,precio);
         statement.executeInsert();
     }
     public void addAnuncio(String idAnuncio,String idSocio,String idLugar,String fechaInicio,

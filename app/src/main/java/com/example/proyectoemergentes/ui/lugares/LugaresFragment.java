@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -47,7 +48,7 @@ public class LugaresFragment extends Fragment implements OnMapReadyCallback{
         super.onCreate(savedInstanceState);
     }
 
-    
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_lugares, container, false);
@@ -78,9 +79,10 @@ public class LugaresFragment extends Fragment implements OnMapReadyCallback{
         double lng=Double.parseDouble(lugares.get(0).getLng());
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(lat,lng))
+                .target(new LatLng(17.060504, -96.725241))
                 .zoom(17)
                 .build();
+
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
 
@@ -88,8 +90,39 @@ public class LugaresFragment extends Fragment implements OnMapReadyCallback{
             lat = Double.parseDouble(lug.getLat());
             lng = Double.parseDouble(lug.getLng());
             LatLng latlng = new LatLng(lat,lng);
-            map.addMarker(new MarkerOptions().position(latlng).title(lug.getNombre()));
+
+            if(lug.getIdCategoria().equals("1")){
+                map.addMarker(new MarkerOptions()
+                        .position(latlng)
+                        .title("Sitio Arqueologico")
+                        .snippet(lug.getNombre())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona2)));
+            }
+            else if(lug.getIdCategoria().equals("2")){
+                map.addMarker(new MarkerOptions()
+                        .position(latlng)
+                        .title("Templos y Excnventos")
+                        .snippet(lug.getNombre())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.templo)));
+            }
+            else if(lug.getIdCategoria().equals("3")){
+                map.addMarker(new MarkerOptions()
+                        .position(latlng)
+                        .title("Museo")
+                        .snippet(lug.getNombre())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.museo)));
+            }
+            else if(lug.getIdCategoria().equals("4")){
+                map.addMarker(new MarkerOptions()
+                        .position(latlng)
+                        .title("Mercados")
+                        .snippet(lug.getNombre())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.mercado)));
+            }
+
+
         }
+
 
     }
 
@@ -105,14 +138,15 @@ public class LugaresFragment extends Fragment implements OnMapReadyCallback{
             String nombre = cursor.getString(1);
             String lat = cursor.getString(2);
             String lng = cursor.getString(3);
-            lugar = new Lugar(id,nombre, lat, lng);
+            String idcategoria = cursor.getString(4);
+            lugar = new Lugar(id,nombre, lat, lng, idcategoria);
             arrayList.add(lugar);
         }
     }
 
 
     private void cargarDatosLocalDB(){
-        lugaresFromLocalDB("SELECT id,nombre,lat,lng FROM lugar", lugares);
+        lugaresFromLocalDB("SELECT id,nombre,lat,lng,categoria FROM lugar ", lugares);
     }
 
 

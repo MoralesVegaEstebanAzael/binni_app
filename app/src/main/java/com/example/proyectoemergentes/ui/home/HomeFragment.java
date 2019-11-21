@@ -1,11 +1,7 @@
 package com.example.proyectoemergentes.ui.home;
 
-import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,10 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -29,18 +22,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ByteArrayPool;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.ByteBufferFileLoader;
-import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.request.target.Target;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.adapter.SliderAdapter;
-import com.example.proyectoemergentes.dataBase.DataBaseHandler;
+import com.example.proyectoemergentes.pager.AutoScrollViewPager;
 import com.example.proyectoemergentes.pojos.Anuncio;
 import com.example.proyectoemergentes.pojos.Lugar;
 import com.google.android.material.tabs.TabLayout;
@@ -49,12 +38,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -74,7 +57,7 @@ public class HomeFragment extends Fragment{
     private ArrayList<Lugar> listMuseos;
 
     //slider utils
-    private ViewPager viewPager;
+    private AutoScrollViewPager viewPager;
     private TabLayout indicator;
     private SliderAdapter adaptSlider;
     ArrayList<Anuncio> listAnuncios;
@@ -90,8 +73,8 @@ public class HomeFragment extends Fragment{
         AsyncTaskLoadDB asyncTaskLoadDB = new AsyncTaskLoadDB();
         asyncTaskLoadDB.execute();
 
-//        AsyntaskLoadAnuncios asyntaskLoadAnuncios = new AsyntaskLoadAnuncios();
-//        asyntaskLoadAnuncios.execute();
+        AsyntaskLoadAnuncios asyntaskLoadAnuncios = new AsyntaskLoadAnuncios();
+        asyntaskLoadAnuncios.execute();
         return root;
     }
 
@@ -100,11 +83,10 @@ public class HomeFragment extends Fragment{
         viewPager = view.findViewById(R.id.viewPager);
         indicator = view.findViewById(R.id.indicador);
         adaptSlider = new SliderAdapter(getContext(),listAnuncios);
-        viewPager.setAdapter(adaptSlider);
+//        viewPager.setAdapter(adaptSlider); //this is right but i do not care it works now
         indicator.setupWithViewPager(viewPager,true);
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new SliderTimer(), 6000, 4000);
-        //swipeRefreshListener(view);
+
+
     }
 
     public void init(View view){
@@ -307,7 +289,8 @@ public class HomeFragment extends Fragment{
                             jsonObject.optString("longitud"),
                             jsonObject.optString("idcategoria"),
                             jsonObject.optString("descripcion"),
-                            jsonObject.optString("url"));
+                            jsonObject.optString("url"),
+                            jsonObject.optString("precio"));
                     if(isAdded()){
                         try {
                             bytes = Glide.with(getContext())
@@ -324,7 +307,7 @@ public class HomeFragment extends Fragment{
                                 lugar.getNombre(),lugar.getLat(),
                                 lugar.getLng(),lugar.getIdCategoria(),
                                 lugar.getDescripcion(),
-                                bytes);
+                                bytes,lugar.getPrecio());
                     }
                 }
             }
@@ -354,6 +337,7 @@ public class HomeFragment extends Fragment{
             byte[] image = cursor.getBlob(2);
             anuncio = new Anuncio(id,nombreLugar,image);
             arrayList.add(anuncio);
+
         }
     }
 
@@ -368,28 +352,6 @@ public class HomeFragment extends Fragment{
        // ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
-//    private class SliderTimer extends TimerTask {
-//        private Handler mHandler = new Handler(Looper.getMainLooper());
-//
-//        @Override
-//        public void run() {
-//            mHandler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                    if(adaptSlider.getCount() > 0) {
-//                        if (viewPager.getCurrentItem() < adaptSlider.getCount() - 1) {
-//                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-//
-//                        } else {
-//                            viewPager.setCurrentItem(0, true);
-//                        }
-//                    }
-//                }
-//            });
-//
-//        }
-//    }
 
 
     //Proceso para obtener datos locales
@@ -424,19 +386,26 @@ public class HomeFragment extends Fragment{
         protected Boolean doInBackground(Void... voids) {
 
             cargarDatosLocalDBAnuncios();
-            //publishProgress(1);
-            return true;
+
+            return null;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-//            super.onPostExecute(aBoolean);
-            notificarAdaptSlider();
+            viewPager.setAdapter(adaptSlider);// jeje it works!! XD que mal programador!!
+
+                viewPager.startAutoScroll();
+                viewPager.setInterval(7000);
+                viewPager.setCycle(true);
+                viewPager.setStopScrollWhenTouch(true);
+
+
         }
 
         @Override
         protected void onCancelled() {
-            super.onCancelled();
+
+
         }
     }
 
