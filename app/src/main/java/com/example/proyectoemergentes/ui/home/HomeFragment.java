@@ -1,9 +1,6 @@
 package com.example.proyectoemergentes.ui.home;
 
-<<<<<<< HEAD
 import android.content.Intent;
-=======
->>>>>>> a76c2af7f41c4930e39ae33b164f2cc7b3ad8483
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,15 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-<<<<<<< HEAD
 import androidx.annotation.Nullable;
-=======
->>>>>>> a76c2af7f41c4930e39ae33b164f2cc7b3ad8483
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,18 +27,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-<<<<<<< HEAD
 import com.example.proyectoemergentes.CodigoQR;
-=======
->>>>>>> a76c2af7f41c4930e39ae33b164f2cc7b3ad8483
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
 import com.example.proyectoemergentes.adapter.SliderAdapter;
-<<<<<<< HEAD
-=======
 import com.example.proyectoemergentes.pager.AutoScrollViewPager;
->>>>>>> a76c2af7f41c4930e39ae33b164f2cc7b3ad8483
 import com.example.proyectoemergentes.pojos.Anuncio;
 import com.example.proyectoemergentes.pojos.Lugar;
 import com.google.android.material.tabs.TabLayout;
@@ -409,11 +396,11 @@ public class HomeFragment extends Fragment{
             viewPager.setAdapter(adaptSlider);// jeje it works!! XD que mal programador!!
 
             notificarAdaptSlider();
-                viewPager.startAutoScroll();
-                viewPager.setInterval(7000);
-                viewPager.setCycle(true);
-                viewPager.setStopScrollWhenTouch(true);
-                viewPager.setBorderAnimation(false);
+            viewPager.startAutoScroll();
+            viewPager.setInterval(7000);
+            viewPager.setCycle(true);
+            viewPager.setStopScrollWhenTouch(true);
+            viewPager.setBorderAnimation(false);
 
         }
 

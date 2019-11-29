@@ -1,21 +1,34 @@
 package com.example.proyectoemergentes.pojos;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Anuncio {
-    @SerializedName("idlugar")
+import java.io.Serializable;
+
+public class Anuncio implements Serializable {
+    @SerializedName("idanuncio")
+    @Expose
     private String id;
     @SerializedName("idsocio")
+    @Expose
     private String idSocio;
     @SerializedName("idlugar")
+    @Expose
     private String idLugar;
     @SerializedName("fecha_inicio")
+    @Expose
     private String fechaInicio;
+    @SerializedName("duracion")
+    @Expose
     private String duracion;
     @SerializedName("idcategoria")
+    @Expose
     private String idCategoria;
     @SerializedName("nombre_lugar")
+    @Expose
     private String nombreLugar;
+    @SerializedName("url")
+    @Expose
     private String url;
 
     private byte[] imagen;

@@ -26,10 +26,6 @@ import java.util.ArrayList;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
     private Context context;
-    //array imagenes test
-//    private int[] imagenes = new int[]{
-//            R.drawable.beach,R.drawable.beer2
-//    };
     private ArrayList<Anuncio> imagenArrayList;
 
     public SliderAdapter(Context context,ArrayList<Anuncio> imageneArrayList){
@@ -62,12 +58,12 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         Glide.with(context)
                 .asDrawable()
                 .load(anuncioImagen)
-//                .thumbnail()
+                .fitCenter()
                 .error(R.drawable.icon404)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        Log.e("IMAGE LOAD::: ","Error cargando la el anuncio",e);
+                        Log.e("IMAGE LOAD::: ","Error cargando el anuncio",e);
                         return false;
                     }
 
@@ -77,7 +73,6 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
                     }
                 })
                 .into(viewHolder.imageViewBackground);
-        viewHolder.imageViewBackground.setScaleType(ImageView.ScaleType.FIT_XY);
 
     }
 
