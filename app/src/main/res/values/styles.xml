@@ -20,8 +20,16 @@
     </style>
 
     <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/s_screen</item>
+        <item name="android:windowBackground">@drawable/login_sc</item>
     </style>
 
+    <style name="GreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Required for sign-in flow styling -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
+        <item name="titleTextColor">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorGray</item>
+        <item name="android:windowBackground">@drawable/bg_color</item>
+    </style>
 
 </resources>

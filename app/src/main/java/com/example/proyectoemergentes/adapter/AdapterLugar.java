@@ -16,10 +16,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.proyectoemergentes.LugarActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.example.proyectoemergentes.pojos.Lugar;
+import com.example.proyectoemergentes.ui.PlaceActivity;
 
 import java.util.ArrayList;
 
@@ -98,9 +98,7 @@ public class AdapterLugar extends RecyclerView.Adapter<AdapterLugar.MyViewHolder
             @Override
             public void onClick(View view) {
                // Toast.makeText(context,"Lanzar activity",Toast.LENGTH_SHORT).show();
-
-
-                Intent intent = new Intent (context, LugarActivity.class);
+                Intent intent = new Intent (context, PlaceActivity.class);
                 intent.putExtra("ID_LUGAR",lugar.getId());
                 intent.putExtra("NOMBRE_LUGAR",lugar.getNombre());
                 context.startActivity(intent);
