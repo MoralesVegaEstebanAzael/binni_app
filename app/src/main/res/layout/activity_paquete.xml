@@ -91,21 +91,14 @@
                 android:text="@string/fecha_reserva"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <LinearLayout
-                android:orientation="horizontal"
+            <devs.mulham.horizontalcalendar.HorizontalCalendarView
+                android:id="@+id/calendarView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <devs.mulham.horizontalcalendar.HorizontalCalendarView
-                    android:id="@+id/calendarView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:textColorNormal="#bababa"
-                    app:textColorSelected="#FFFF"
-                    app:selectorColor="@color/colorAccent"
-                    app:selectedDateBackground="@color/colorYellow"/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                app:textColorNormal="#bababa"
+                app:textColorSelected="#FFFF"
+                app:selectorColor="#c62828"
+            app:selectedDateBackground="@color/colorYellow"/>
             <RelativeLayout
                 android:id="@+id/expandable2"
                 android:layout_width="match_parent"
