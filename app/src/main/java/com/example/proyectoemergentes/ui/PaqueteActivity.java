@@ -2,6 +2,7 @@ package com.example.proyectoemergentes.ui;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,6 +27,7 @@ import androidx.core.view.MenuItemCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.ShoppingActivity;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.example.proyectoemergentes.pojos.Paquete;
 import com.google.android.material.appbar.AppBarLayout;
@@ -219,10 +221,19 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
         getMenuInflater().inflate(R.menu.toolbar_menu_paquete, menu);
 
         final MenuItem menuItem = menu.findItem(R.id.action_shopping_cart);
-        View actionView = MenuItemCompat.getActionView(menuItem);
+
+        View actionView= MenuItemCompat.getActionView(menuItem);
         textCartItemCount = actionView.findViewById(R.id.cart_badge);
         int count = localDB.getCountShoppingCart();
         textCartItemCount.setText(count+"");
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
         return true;
     }
 
@@ -232,8 +243,11 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
         switch (id){
             case R.id.action_shopping_cart:
                 Toast.makeText(this,"Carrito",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ShoppingActivity.class);
+                startActivity(intent);
                 break;
             case R.id.action_favorite:
+                Toast.makeText(this,"Favorito",Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
