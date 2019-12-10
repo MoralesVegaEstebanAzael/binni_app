@@ -78,9 +78,10 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/paquetePrecio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/paquete_precio"
+                android:text="@string/paquete_precio_individual"
                 android:textStyle="bold">
 
             </TextView>
@@ -115,7 +116,7 @@
                         android:id="@+id/layoutCollapsed"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
                         <LinearLayout
                             android:divider="@drawable/empty_tall_divider"
                             android:showDividers="middle"
@@ -139,22 +140,27 @@
                             android:layout_gravity="fill_horizontal"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content">
                             <Button
+                                android:id="@+id/btnDecrementar"
                                 android:layout_gravity="center_horizontal"
                                 android:text="-"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                                 android:background="@drawable/toggle_button_background"
                                 android:layout_width="@dimen/button_width_reservacion"
                                 android:layout_height="@dimen/button_height_reservacion"/>
-                            <Button
+                            <TextView
+                                android:id="@+id/textVContador"
                                 android:layout_gravity="center_horizontal"
                                 android:text="0"
+                                android:gravity="center"
+                                android:textAlignment="center"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                                 android:background="@drawable/toggle_button_background"
                                 android:layout_width="@dimen/button_width_reservacion"
                                 android:layout_height="@dimen/button_height_reservacion"/>
                             <Button
+                                android:id="@+id/btnAumentar"
                                 android:layout_gravity="center_horizontal"
                                 android:text="+"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -168,23 +174,94 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <Button
+                            android:id="@+id/btnReservar"
+                            android:textStyle="bold"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             android:layout_margin="10dp"
                             android:textColor="@color/colorPrimary"
-                            android:text="Reservar"
+                            android:text="Verificar disponibilidad"
                             android:background="@color/colorYellow"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"/>
+                            android:layout_height="40dp"/>
                     </LinearLayout>
                 </LinearLayout>
 
             </RelativeLayout>
-
+            <RelativeLayout
+                android:id="@+id/layoutComprar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+            <LinearLayout
+                android:divider="@drawable/empty_tall_divider"
+                android:showDividers="middle"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/paqueteNombre2"
+                        android:layout_gravity="center_vertical"
+                        android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+                        android:text="Nombre del paquete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+                    <LinearLayout
+                        android:gravity="right"
+                        android:orientation="vertical"
+                        android:layout_gravity="right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/totalPaquete"
+                        android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+                        android:text="$1,481.21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/paquetePrecio2"
+                        android:text="n Adultos x $precio unitaro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+                    <Button
+                        android:id="@+id/btnComprar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorYellow"
+                        android:text="Agregar al carrito"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/browser_actions_text_color"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </LinearLayout>
+            </RelativeLayout>
             <TextView
-                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lugar_descripcion"
-                android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
+                android:text="@string/lugar_descripcion"></TextView>
 
 
             <me.biubiubiu.justifytext.library.JustifyTextView

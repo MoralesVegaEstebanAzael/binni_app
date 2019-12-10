@@ -3,6 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="button_fecha_reservacion">55dp</dimen>
-    <dimen name="button_height_reservacion">35dp</dimen>
+    <dimen name="button_height_reservacion">45dp</dimen>
     <dimen name="button_width_reservacion">55dp</dimen>
 </resources>

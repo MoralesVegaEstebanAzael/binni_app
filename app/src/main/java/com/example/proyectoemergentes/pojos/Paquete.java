@@ -1,8 +1,9 @@
 package com.example.proyectoemergentes.pojos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Paquete {
+public class Paquete implements Serializable {
     private String id;
     private String nombre;
     private String precio;
@@ -56,4 +57,6 @@ public class Paquete {
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
     }
+
+
 }

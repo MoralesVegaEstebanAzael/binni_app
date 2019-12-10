@@ -3,7 +3,6 @@ package com.example.proyectoemergentes.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,7 @@ public class AdapterPaquete extends RecyclerView.Adapter<AdapterPaquete.MyViewHo
                 .into(holder.imageView);
         holder.textViewNombre.setText(paquete.getNombre());
         Resources res = context.getResources();
-        String precio = String.format(res.getString(R.string.paquete_precio), paquete.getPrecio());
+        String precio = String.format(res.getString(R.string.paquete_precio_individual), paquete.getPrecio());
 
         holder.textViewPrecio.setText(precio);
 
@@ -58,10 +57,14 @@ public class AdapterPaquete extends RecyclerView.Adapter<AdapterPaquete.MyViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PaqueteActivity.class);
-                Bundle b=new Bundle();
+                /*Bundle b=new Bundle();
+                b.putParcelable("PAQUETE",paquete);
                 b.putStringArrayList("LUGARES",paquete.getLugares());
                 b.putString("ID_PAQUETE",paquete.getId());
                 intent.putExtras(b);
+                */
+                intent.putExtra("PAQUETECLASS", paquete);
+
                 context.startActivity(intent);
 
             }
