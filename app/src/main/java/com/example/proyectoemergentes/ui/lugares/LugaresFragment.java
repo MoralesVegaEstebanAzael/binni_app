@@ -22,7 +22,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -153,29 +152,29 @@ public class LugaresFragment extends Fragment implements OnMapReadyCallback{
                 map.addMarker(new MarkerOptions()
                         .position(latlng)
                         .title("Sitio Arqueologico")
-                        .snippet(lug.getNombre())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona2)));
+                        .snippet(lug.getNombre()));
+                       // .icon(BitmapDescriptorFactory.fromResource(R.drawable.zona2)));
             }
             else if(lug.getIdCategoria().equals("2")){
                 map.addMarker(new MarkerOptions()
                         .position(latlng)
                         .title("Templos y Excnventos")
-                        .snippet(lug.getNombre())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.templo)));
+                        .snippet(lug.getNombre()));
+                       // .icon(BitmapDescriptorFactory.fromResource(R.drawable.temp)));
             }
             else if(lug.getIdCategoria().equals("3")){
                 map.addMarker(new MarkerOptions()
                         .position(latlng)
                         .title("Museo")
-                        .snippet(lug.getNombre())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.museo)));
+                        .snippet(lug.getNombre()));
+                       // .icon(BitmapDescriptorFactory.fromResource(R.drawable.museo)));
             }
             else if(lug.getIdCategoria().equals("4")){
                 map.addMarker(new MarkerOptions()
                         .position(latlng)
                         .title("Mercados")
-                        .snippet(lug.getNombre())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.mercado)));
+                        .snippet(lug.getNombre()));
+                        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.mercado)));
             }
 
 
@@ -206,9 +205,4 @@ public class LugaresFragment extends Fragment implements OnMapReadyCallback{
     private void cargarDatosLocalDB(){
         lugaresFromLocalDB("SELECT id,nombre,lat,lng,categoria FROM lugar ", lugares);
     }
-
-
-
-
-
 }

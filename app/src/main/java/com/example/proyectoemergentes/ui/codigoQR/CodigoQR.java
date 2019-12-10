@@ -1,10 +1,12 @@
-package com.example.proyectoemergentes;
+package com.example.proyectoemergentes.ui.codigoQR;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -12,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.ui.PlaceActivity;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -21,24 +25,28 @@ import static android.Manifest.permission.CAMERA;
 public class CodigoQR extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private static final int REQUEST_CAMARA=1;
     private ZXingScannerView scannerView;
-
+    private Button buttonCancelar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_codigo_qr);
-
-        scannerView= new ZXingScannerView(this);
-        setContentView(scannerView);
-
+        buttonCancelar = findViewById(R.id.btn_cancelar);
+        scannerView= findViewById(R.id.scanner);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (checkPermission()){
-                Toast.makeText(CodigoQR.this, "Persmisos concedidos", Toast.LENGTH_LONG).show();
-
             }else {
+                Toast.makeText(CodigoQR.this, "Permisos concedidos", Toast.LENGTH_LONG).show();
                 requestPermision();
             }
         }
+
+        buttonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
@@ -56,9 +64,9 @@ public class CodigoQR extends AppCompatActivity implements ZXingScannerView.Resu
                 if(grantResults.length>0){
                     boolean cameraAccepted= grantResults[0]==PackageManager.PERMISSION_GRANTED;
                     if (cameraAccepted) {
-                        Toast.makeText(CodigoQR.this, "PErmisos concedidos", Toast.LENGTH_LONG).show();
+                        Toast.makeText(CodigoQR.this, "Permisos concedidos", Toast.LENGTH_LONG).show();
                     }else{
-                        Toast.makeText(CodigoQR.this, "PErmisos denegados", Toast.LENGTH_LONG).show();
+                        Toast.makeText(CodigoQR.this, "Permiso denegado", Toast.LENGTH_LONG).show();
                         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
                             if(shouldShowRequestPermissionRationale(CAMERA)){
                                 displayAlertMessage("Necesitas das permisos a la aplicacion",
@@ -138,7 +146,7 @@ public class CodigoQR extends AppCompatActivity implements ZXingScannerView.Resu
         AlertDialog alert= builder.create();
         alert.show();*/
 
-        Intent intent = new Intent (this, LugarActivity.class);
+        Intent intent = new Intent (this, PlaceActivity.class);
         intent.putExtra("ID_LUGAR",scanResult);
         startActivity(intent);
         this.finish();
