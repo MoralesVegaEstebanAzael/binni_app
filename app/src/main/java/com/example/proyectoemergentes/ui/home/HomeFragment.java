@@ -1,20 +1,15 @@
 package com.example.proyectoemergentes.ui.home;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.example.proyectoemergentes.CodigoQR;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.adapter.AdapterLugar;
@@ -45,17 +39,23 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class HomeFragment extends Fragment{
+    private RecyclerView recyclerViewPopulares;
     private RecyclerView recyclerViewZonasArq;
     private RecyclerView recyclerViewTemplos;
     private RecyclerView recyclerViewMuseos;
+    private RecyclerView recyclerViewMercados;
+    private AdapterLugar adapterPopulares;
     private AdapterLugar adapterLugarZonasArq;
     private AdapterLugar adapterLugarTemplos;
     private AdapterLugar adapterLugarMuseos;
+    private AdapterLugar adapterLugarMercados;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ArrayList<Lugar> listPopulares;
     private ArrayList<Lugar> listZonasArq;
     private ArrayList<Lugar> listPlaces;
     private ArrayList<Lugar> listTemplos;
     private ArrayList<Lugar> listMuseos;
+    private ArrayList<Lugar> listMercados;
 
     //slider utils
     private AutoScrollViewPager viewPager;
@@ -93,6 +93,8 @@ public class HomeFragment extends Fragment{
         listPlaces = new ArrayList<Lugar>();
         listTemplos = new ArrayList<Lugar>();
         listMuseos = new ArrayList<Lugar>();
+        listMercados = new ArrayList<Lugar>();
+
 
         recyclerViewZonasArq = view.findViewById(R.id.recycler_view_places);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -116,6 +118,14 @@ public class HomeFragment extends Fragment{
         adapterLugarMuseos = new AdapterLugar(getContext(),listMuseos);
         recyclerViewMuseos.setAdapter(adapterLugarMuseos);
 
+        recyclerViewMercados = view.findViewById(R.id.recyclerViewMercados);
+        LinearLayoutManager layoutManager4 = new LinearLayoutManager(getContext());
+        layoutManager4.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerViewMercados.setLayoutManager(layoutManager4);
+        adapterLugarMercados = new AdapterLugar(getContext(),listMercados);
+        recyclerViewMercados.setAdapter(adapterLugarMercados);
+
+
         swipeRefreshListener(view);
 
     }
@@ -125,17 +135,12 @@ public class HomeFragment extends Fragment{
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 apiLugares(getString(R.string.url_api_lugares_categoria));
                 apiAnuncios(getString(R.string.url_api_anuncios));
                 AsyncTaskLoadDB asyncTaskLoadDB = new AsyncTaskLoadDB();
                 asyncTaskLoadDB.execute();
-
                 AsyntaskLoadAnuncios asyntaskLoadAnuncios = new AsyntaskLoadAnuncios();
                 asyntaskLoadAnuncios.execute();
-
-
-
                /* Fragment frg = null;
                 frg = getActivity().getSupportFragmentManager().findFragmentByTag("HOMETAG");
                                final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -157,7 +162,7 @@ public class HomeFragment extends Fragment{
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '1'",listZonasArq,adapterLugarZonasArq);
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '2'",listTemplos,adapterLugarTemplos);
         lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '3'",listMuseos,adapterLugarMuseos);
-
+        lugaresFromLocalDB("SELECT id,nombre,imagen FROM lugar where categoria = '4'",listMercados,adapterLugarMercados);
     }
 
     public void cargarDatosLocalDBAnuncios(){
@@ -168,6 +173,7 @@ public class HomeFragment extends Fragment{
         adapterLugarMuseos.notifyDataSetChanged();
         adapterLugarTemplos.notifyDataSetChanged();
         adapterLugarZonasArq.notifyDataSetChanged();
+        adapterLugarMercados.notifyDataSetChanged();
     }
 
     private void notificarAdaptSlider(){
@@ -406,11 +412,9 @@ public class HomeFragment extends Fragment{
 
         @Override
         protected void onCancelled() {
-
-
         }
     }
-
+/*
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -419,7 +423,6 @@ public class HomeFragment extends Fragment{
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar_menu,menu);
-        menu.findItem(R.id.action_qr_code).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
     @Override
@@ -430,6 +433,6 @@ public class HomeFragment extends Fragment{
             startActivityForResult(intent,0);
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 }

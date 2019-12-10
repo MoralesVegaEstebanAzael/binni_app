@@ -41,7 +41,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textSize="15sp" />
+
                     <xyz.hanks.library.bang.SmallBangView
+                        android:elevation="30dp"
                         android:id="@+id/like_heart"
                         android:layout_width="25dp"
                         android:layout_height="25dp">
@@ -53,6 +55,7 @@
                             android:layout_gravity="center"
                             android:src="@drawable/ic_favorite_border_black_24dp"
                             android:text="Hello World!"/>
+
                     </xyz.hanks.library.bang.SmallBangView>
                 </LinearLayout>
             </RelativeLayout>

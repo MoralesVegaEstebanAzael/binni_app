@@ -1,39 +1,31 @@
 package com.example.proyectoemergentes;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
-import com.example.proyectoemergentes.pojos.Lugar;
-import com.example.proyectoemergentes.ui.lugares.LugaresFragment;
-import com.example.proyectoemergentes.ui.home.HomeFragment;
+import com.example.proyectoemergentes.ui.codigoQR.CodigoQR;
 import com.example.proyectoemergentes.ui.favoritos.FavoritosFragment;
+import com.example.proyectoemergentes.ui.home.HomeFragment;
+import com.example.proyectoemergentes.ui.lugares.LugaresFragment;
 import com.example.proyectoemergentes.ui.paquetes.PaquetesFragment;
 import com.example.proyectoemergentes.ui.perfil.PerfilFragment;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.transition.FragmentTransitionSupport;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import devlight.io.library.ntb.NavigationTabBar;
-
-import static android.graphics.BitmapFactory.decodeResource;
 
 public class MainActivity extends AppCompatActivity {
     public static DataBaseHandler dataBaseHandler;
@@ -63,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);*/
         tabbar();
-        //add();
+        add();
     }
 
     private void add(){
@@ -172,6 +164,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        //MenuItem shareItem = menu.findItem(R.id.action_shopping_cart);
+        //shareItem.setVisible(true);
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.action_qr_code){
+            Intent intent= new Intent(this, CodigoQR.class);
+            startActivityForResult(intent,0);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }
