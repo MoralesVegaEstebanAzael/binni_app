@@ -246,7 +246,7 @@
                         android:layout_weight="1"
                         />
                     <Button
-                        android:id="@+id/btnComprar"
+                        android:id="@+id/btnAddShopping"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/colorYellow"
@@ -265,7 +265,7 @@
 
 
             <me.biubiubiu.justifytext.library.JustifyTextView
-                android:id="@+id/textVDescripcion"
+                android:id="@+id/textVDescripcionPaquete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -277,25 +277,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_monetization_on_black_24dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/lugar_precio"
-                    android:textSize="18sp"
-                    android:textStyle="bold"></TextView>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

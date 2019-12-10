@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import androidx.core.view.MenuItemCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.proyectoemergentes.R;
+import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.example.proyectoemergentes.pojos.Paquete;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -43,7 +45,7 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
     RelativeLayout relativeLayout;
     RelativeLayout relativeLayout2;
     ValueAnimator mAnimator;
-    private Button btnDecrementar,btnAumentar,btnVerificar,btnComprar;
+    private Button btnDecrementar,btnAumentar,btnVerificar,btnAddShopping;
     private TextView textViewNombre,textViewPrecio,textViewContador;
     private TextView textViewNombre2,textViewPrecio2,textViewTotal;
     private int contador;
@@ -51,12 +53,14 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
     private Paquete paquete;
     private double precioUnitario;
     private TextView textCartItemCount;
+    private TextView textViewDescripion;
+    private DataBaseHandler localDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paquete);
 
-
+        localDB = new DataBaseHandler(this);
         paquete = (Paquete) getIntent().getSerializableExtra("PAQUETECLASS");
         lugares=paquete.getLugares();
         idPaquete = paquete.getId();
@@ -70,12 +74,14 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
     private void init(){
         btnDecrementar = findViewById(R.id.btnDecrementar);
         btnAumentar = findViewById(R.id.btnAumentar);
+        btnAddShopping = findViewById(R.id.btnAddShopping);
         textViewContador = findViewById(R.id.textVContador);
         textViewNombre = findViewById(R.id.paqueteNombre);
         textViewNombre2 = findViewById(R.id.paqueteNombre2);
         textViewPrecio = findViewById(R.id.paquetePrecio);
         textViewPrecio2 = findViewById(R.id.paquetePrecio2);
         textViewTotal = findViewById(R.id.totalPaquete);
+        textViewDescripion = findViewById(R.id.textVDescripcionPaquete);
 
 
         Resources res = getResources();
@@ -90,9 +96,19 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
         btnVerificar = findViewById(R.id.btnReservar);
         contador=0;
 
+        String descripcion ="";
+        for (String lugar:lugares){
+            ///Cursor cursor = MainActivity.dataBaseHandler.getLugar(lugar);
+            //if(cursor!=null){
+                descripcion+= lugar +"\n";
+            //}
+        }
+        textViewDescripion.setText("Recorrido\n " +  descripcion);
         btnAumentar.setOnClickListener(this);
         btnDecrementar.setOnClickListener(this);
         btnVerificar.setOnClickListener(this);
+        btnAddShopping.setOnClickListener(this);
+
         Calendar startDate = Calendar.getInstance();
         startDate.add(Calendar.MONTH, -1);
 
@@ -205,6 +221,8 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
         final MenuItem menuItem = menu.findItem(R.id.action_shopping_cart);
         View actionView = MenuItemCompat.getActionView(menuItem);
         textCartItemCount = actionView.findViewById(R.id.cart_badge);
+        int count = localDB.getCountShoppingCart();
+        textCartItemCount.setText(count+"");
         return true;
     }
 
@@ -213,6 +231,7 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
         int id = item.getItemId();
         switch (id){
             case R.id.action_shopping_cart:
+                Toast.makeText(this,"Carrito",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_favorite:
                 break;
@@ -316,8 +335,10 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
                     collapse(relativeLayout2);
                 }
                 break;
-            case R.id.btnComprar:
-
+            case R.id.btnAddShopping:
+                localDB.addShoppingCart(paquete.getId());
+                int count =localDB.getCountShoppingCart();
+                textCartItemCount.setText(""+count);
                 break;
         }
         textViewContador.setText(""+contador);

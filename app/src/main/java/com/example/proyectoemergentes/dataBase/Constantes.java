@@ -20,6 +20,7 @@ public class Constantes {
     //tabla favoritos
     public static final String TABLE_FAVORITOS="favoritos";
     public static final String FAVORITOS_LUGAR= "lugar";
+
     public static final String CREATE_TABLE_FAVORITOS = "CREATE TABLE " + TABLE_FAVORITOS
             + " ("+FAVORITOS_LUGAR+ " TEXT)";
     //tabla imagen
@@ -29,4 +30,9 @@ public class Constantes {
     //tabla anuncio
     public static final String CREATE_TABLE_ANUNCIO = "CREATE TABLE IF NOT EXISTS anuncio(" +
             "idanuncio STRING PRIMARY KEY,idsocio STRING,idlugar STRING,fecha_inicio STRING,duracion STRING,idcategoria STRING,nombre_lugar TEXT,imagen BLOB)";
+
+   // public static final String CREATE_TABLE_PAQUETE  = "CREATE TABLE IF NOT EXISTS shopping_cart(idpaquete STRING,STRING)";
+   public static final String PAQUETE_SHOPPING_CART= "lugar";
+    public static final String CREATE_TABLE_SHOPPING_CART = "CREATE TABLE IF NOT EXISTS shopping_cart(idpaquete STRING)";
+    public static final String TABLE_SHOPPING_CART="shopping_cart";
 }

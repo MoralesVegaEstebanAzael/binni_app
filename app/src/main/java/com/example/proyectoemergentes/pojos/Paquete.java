@@ -8,8 +8,17 @@ public class Paquete implements Serializable {
     private String nombre;
     private String precio;
     private ArrayList<String> lugares;
-    private String urlImagen;
+    private ArrayList<String> urlLugares;
 
+    public ArrayList<String> getUrlLugares() {
+        return urlLugares;
+    }
+
+    public void setUrlLugares(ArrayList<String> urlLugares) {
+        this.urlLugares = urlLugares;
+    }
+
+    private String urlImagen;
     public Paquete(String id, String nombre, String precio, ArrayList<String> lugares, String urlImagen) {
         this.id = id;
         this.nombre = nombre;

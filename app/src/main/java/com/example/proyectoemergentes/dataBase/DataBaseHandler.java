@@ -10,9 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 public class DataBaseHandler extends SQLiteOpenHelper {
@@ -36,6 +34,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_IMAGEN);
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_USUARIO);
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_ANUNCIO);
+        sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_SHOPPING_CART);
     }
 
     @Override
@@ -52,6 +51,33 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 "("+Constantes.FAVORITOS_LUGAR+") " + " VALUES ('%s');",lugarID);
         database.execSQL(query);
     }
+
+    public void addShoppingCart(String paquete){
+        // SQLiteDatabase db = getReadableDatabase();
+       // try{
+            database = getWritableDatabase();
+            String query = String.format("INSERT INTO shopping_cart "+
+                    "(idpaquete) " + " VALUES ('%s');",paquete);
+            database.execSQL(query);
+        //}catch (Exception e){
+          //  Log.i("ERRORADD",e.getMessage());
+        ///}
+    }
+    public int getCountShoppingCart(){
+        database = getWritableDatabase();
+        Cursor mCount= database.rawQuery("select count(*) from shopping_cart", null);
+        mCount.moveToFirst();
+        int count= mCount.getInt(0);
+        mCount.close();
+        return count;
+    }
+    public void removeShoppingCart(String paquete){
+        database = getWritableDatabase();
+        String query = String.format("DELETE FROM shopping_cart "+
+                " WHERE idpaquete"+" ='%s';", paquete);
+        database.execSQL(query);
+    }
+
     public void removeFavoritos(String lugarID){
         database = getWritableDatabase();
         String query = String.format("DELETE FROM " + Constantes.TABLE_FAVORITOS +
@@ -193,4 +219,13 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         byte[] byteArray = stream.toByteArray();
         return byteArray;
     }
+
+    public Cursor getLugar(String lugarID){
+        database = getReadableDatabase();
+        String query = String.format("SELECT *  FROM " + Constantes.CREATE_TABLE_LUGAR +
+                " WHERE id "+" ='%s';",lugarID);
+        Cursor cursor = database.rawQuery(query,null);
+        return cursor;
+    }
+
 }
