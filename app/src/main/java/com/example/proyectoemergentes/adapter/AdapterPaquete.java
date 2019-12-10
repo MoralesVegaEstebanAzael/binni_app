@@ -1,6 +1,7 @@
 package com.example.proyectoemergentes.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.example.proyectoemergentes.pojos.Paquete;
+import com.example.proyectoemergentes.ui.PaqueteActivity;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,7 @@ public class AdapterPaquete extends RecyclerView.Adapter<AdapterPaquete.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Paquete paquete = listPaquete.get(position);
+
         Glide.with(context)
                 .load(paquete.getUrlImagen())
                 .error(R.drawable.ic_cloud_off_black_24dp)
@@ -46,9 +49,26 @@ public class AdapterPaquete extends RecyclerView.Adapter<AdapterPaquete.MyViewHo
                 .into(holder.imageView);
         holder.textViewNombre.setText(paquete.getNombre());
         Resources res = context.getResources();
-        String precio = String.format(res.getString(R.string.paquete_precio), paquete.getPrecio());
+        String precio = String.format(res.getString(R.string.paquete_precio_individual), paquete.getPrecio());
 
         holder.textViewPrecio.setText(precio);
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PaqueteActivity.class);
+                /*Bundle b=new Bundle();
+                b.putParcelable("PAQUETE",paquete);
+                b.putStringArrayList("LUGARES",paquete.getLugares());
+                b.putString("ID_PAQUETE",paquete.getId());
+                intent.putExtras(b);
+                */
+                intent.putExtra("PAQUETECLASS", paquete);
+
+                context.startActivity(intent);
+
+            }
+        });
     }
     @Override
     public int getItemCount() {

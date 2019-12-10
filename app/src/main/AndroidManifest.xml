@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.PaqueteActivity"
+            android:theme="@style/CustomActionBar"></activity>
+
         <activity android:name=".ui.PhotoActivity" />
         <activity
             android:name=".ui.PlaceActivity"
@@ -36,6 +39,7 @@
             </intent-filter>
         </activity>
         <activity
+
             android:theme="@style/SplashTheme"
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_main2" >
@@ -46,6 +50,10 @@
             android:label="@string/title_activity_main2">
 
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main2"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
