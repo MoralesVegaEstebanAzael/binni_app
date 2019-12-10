@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -87,8 +86,6 @@ public class HomeFragment extends Fragment{
         adaptSlider = new SliderAdapter(getContext(),listAnuncios);
 //        viewPager.setAdapter(adaptSlider); //this is right but i do not care it works now
         indicator.setupWithViewPager(viewPager,true);
-
-
     }
 
     public void init(View view){
@@ -249,19 +246,21 @@ public class HomeFragment extends Fragment{
                             jsonObject.optString("url"));
                     listAnuncios.add(anuncio);
 
-                    try {
-                        bytes = Glide.with(getContext())
-                                .as(byte[].class)
-                                .load(anuncio.getUrl())
-                                .submit()
-                                .get();
-                    }catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if(isAdded()){
+                        try {
+                            bytes = Glide.with(getContext())
+                                    .as(byte[].class)
+                                    .load(anuncio.getUrl())
+                                    .submit()
+                                    .get();
+                        }catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        MainActivity.dataBaseHandler.addAnuncio(anuncio.getId(),anuncio.getIdSocio(),anuncio.getIdLugar(),
+                                anuncio.getFechaInicio(),anuncio.getDuracion(),anuncio.getIdCategoria(),anuncio.getNombreLugar(),bytes);
                     }
-                    MainActivity.dataBaseHandler.addAnuncio(anuncio.getId(),anuncio.getIdSocio(),anuncio.getIdLugar(),
-                            anuncio.getFechaInicio(),anuncio.getDuracion(),anuncio.getIdCategoria(),anuncio.getNombreLugar(),bytes);
 
                 }
             }
@@ -396,11 +395,12 @@ public class HomeFragment extends Fragment{
         protected void onPostExecute(Boolean aBoolean) {
             viewPager.setAdapter(adaptSlider);// jeje it works!! XD que mal programador!!
 
-                viewPager.startAutoScroll();
-                viewPager.setInterval(7000);
-                viewPager.setCycle(true);
-                viewPager.setStopScrollWhenTouch(true);
-
+            notificarAdaptSlider();
+            viewPager.startAutoScroll();
+            viewPager.setInterval(7000);
+            viewPager.setCycle(true);
+            viewPager.setStopScrollWhenTouch(true);
+            viewPager.setBorderAnimation(false);
 
         }
 

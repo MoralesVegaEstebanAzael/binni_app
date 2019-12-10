@@ -9,4 +9,7 @@
     <color name="inactiveColor">#cccccc</color>
     <color name="ntb_bg_color">#FFFFFF</color>
     <color name="colorToolbarCollapsed">#FF8A80</color>
+
+    <color name="negro_semitransparente">#4D000000</color>
+    <color name="blanco">#fafafa</color>
 </resources>

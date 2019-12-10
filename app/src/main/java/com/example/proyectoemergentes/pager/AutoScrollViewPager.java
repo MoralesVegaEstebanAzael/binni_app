@@ -223,6 +223,7 @@ public class AutoScrollViewPager extends ViewPager {
                     AutoScrollViewPager pager = this.autoScrollViewPager.get();
                     if (pager != null) {
                         pager.scroller.setScrollDurationFactor(pager.autoScrollFactor);
+                        pager.getAdapter().notifyDataSetChanged();
                         pager.scrollOnce();
                         pager.scroller.setScrollDurationFactor(pager.swipeScrollFactor);
                         pager.sendScrollMessage(pager.interval + pager.scroller.getDuration());
