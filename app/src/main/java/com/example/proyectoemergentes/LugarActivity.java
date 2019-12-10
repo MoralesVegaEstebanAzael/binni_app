@@ -134,6 +134,8 @@ public class LugarActivity extends AppCompatActivity  implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_ubicacion);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
+
+
     }
 
     private void cargarDatosLocalDB(){

@@ -59,7 +59,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
                 .asDrawable()
                 .load(anuncioImagen)
                 .fitCenter()
-                .error(R.drawable.icon404)
+                //.error(R.drawable.icon404)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
