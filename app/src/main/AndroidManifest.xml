@@ -19,16 +19,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.PaqueteActivity"
+            android:theme="@style/CustomActionBar"></activity>
         <activity android:name=".ui.PhotoActivity" />
         <activity
             android:name=".ui.PlaceActivity"
             android:theme="@style/CustomActionBar" />
         <activity android:name=".ui.FullScreenGaleriaActivity" />
-        <activity android:name=".ui.codigoQR.CodigoQR"
-            android:theme="@style/CustomActionBar"/>
+        <activity
+            android:name=".ui.codigoQR.CodigoQR"
+            android:theme="@style/CustomActionBar" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme" >
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,16 +39,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/SplashTheme"
             android:name=".ui.LoginActivity"
-            android:label="@string/title_activity_main2" >
-
-        </activity>
+            android:label="@string/title_activity_main2"
+            android:theme="@style/SplashTheme"></activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main2">
-
-        </activity>
+            android:label="@string/title_activity_main2"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

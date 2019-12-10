@@ -35,7 +35,7 @@
     <string name="lugar_precio">Precio</string>
     <string name="lugar_horario">Horario</string>
     <string name="lugar_galeria">Galeria</string>
-    <string name="paquete_precio">MX$ %1$s por persona.</string>
+    <string name="paquete_precio">MX$ %1$s por adulto.</string>
     <string name="lugar_descripcion">Descripción</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of
         the printing and typesetting industry. Lorem Ipsum has beenlso the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
@@ -44,4 +44,5 @@
     <string name="facebook_login_protocol_scheme" translatable="false">fb1156050791451314</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
+    <string name="fecha_reserva">¿Cuándo te gustaría ir?</string>
 </resources>
