@@ -6,20 +6,34 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
+import com.bumptech.glide.Glide;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
-import com.example.proyectoemergentes.ui.favoritos.FavoritosFragment;
-import com.example.proyectoemergentes.ui.home.HomeFragment;
+import com.example.proyectoemergentes.pojos.Lugar;
 import com.example.proyectoemergentes.ui.lugares.LugaresFragment;
+import com.example.proyectoemergentes.ui.home.HomeFragment;
+import com.example.proyectoemergentes.ui.favoritos.FavoritosFragment;
 import com.example.proyectoemergentes.ui.paquetes.PaquetesFragment;
 import com.example.proyectoemergentes.ui.perfil.PerfilFragment;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import androidx.transition.FragmentTransitionSupport;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import devlight.io.library.ntb.NavigationTabBar;
+
+import static android.graphics.BitmapFactory.decodeResource;
 
 public class MainActivity extends AppCompatActivity {
     public static DataBaseHandler dataBaseHandler;
@@ -49,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);*/
         tabbar();
-        add();
+        //add();
     }
 
     private void add(){

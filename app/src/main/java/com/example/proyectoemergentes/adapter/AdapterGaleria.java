@@ -1,8 +1,11 @@
 package com.example.proyectoemergentes.adapter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +13,14 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.proyectoemergentes.LugarActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
+import com.example.proyectoemergentes.pojos.GaleriaImagen;
+import com.example.proyectoemergentes.pojos.Lugar;
 import com.example.proyectoemergentes.ui.FullScreenGaleriaActivity;
+
+import java.util.ArrayList;
 
 public class AdapterGaleria extends RecyclerView.Adapter<AdapterGaleria.MyViewHolder> {
     private Context context;

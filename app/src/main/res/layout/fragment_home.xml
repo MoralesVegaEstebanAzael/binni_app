@@ -29,9 +29,9 @@
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/indicador"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/indicador_overlay"
-                        android:layout_marginTop="145dp"
+                        android:layout_marginTop="160dp"
                         app:tabBackground="@drawable/indicador_selector"
                         app:tabGravity="center"
                         app:tabIndicatorHeight="0dp" />
@@ -49,7 +49,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
-                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_marginLeft="15dp"
                             android:layout_width="match_parent"
@@ -57,11 +56,11 @@
                             android:layout_marginBottom="10dp"
                             android:text="@string/title_popular_place" />
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/reyclerViewPopulares"
+                            android:id="@+id/recycler_view_places"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            />
                         <TextView
-                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_marginLeft="15dp"
                             android:layout_width="match_parent"
@@ -73,7 +72,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                         <TextView
-                            android:textStyle="bold"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_marginLeft="15dp"
                             android:layout_width="match_parent"
@@ -82,32 +80,6 @@
                             android:text="@string/categoria_museos" />
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/reyclerViewMuseos"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:textStyle="bold"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:layout_marginLeft="15dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:text="@string/categoria_zonas_arqueologicas" />
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view_places"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            />
-
-                        <TextView
-                            android:textStyle="bold"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:layout_marginLeft="15dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:text="@string/categoria_mercados" />
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerViewMercados"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 

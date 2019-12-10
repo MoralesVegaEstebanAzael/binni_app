@@ -24,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.proyectoemergentes.ui.LoginActivity;
+import com.example.proyectoemergentes.LoginActivity;
 import com.example.proyectoemergentes.MainActivity;
 import com.example.proyectoemergentes.R;
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
@@ -39,10 +39,10 @@ import java.io.InputStream;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.proyectoemergentes.ui.LoginActivity.PREFERENCES_CORREO_USUARIO;
-import static com.example.proyectoemergentes.ui.LoginActivity.PREFERENCES_ESTADO_SESION_USUARIO;
-import static com.example.proyectoemergentes.ui.LoginActivity.PREFERENCES_NOMBRE_USUARIO;
-import static com.example.proyectoemergentes.ui.LoginActivity.STRING_PREFERENCES_USUARIO;
+import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_CORREO_USUARIO;
+import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_ESTADO_SESION_USUARIO;
+import static com.example.proyectoemergentes.LoginActivity.PREFERENCES_NOMBRE_USUARIO;
+import static com.example.proyectoemergentes.LoginActivity.STRING_PREFERENCES_USUARIO;
 
 
 public class PerfilFragment extends Fragment {
