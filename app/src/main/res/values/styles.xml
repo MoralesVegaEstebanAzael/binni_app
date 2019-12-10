@@ -20,7 +20,12 @@
     </style>
 
     <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/login_sc</item>
+        <item name="android:windowBackground">@drawable/s_screen</item>
+    </style>
+
+    <style name="Etiquetas">
+        <item name="android:background">@drawable/background_label_fab</item>
+        <item name="android:textColor">@color/blanco</item>
     </style>
 
     <style name="GreenTheme" parent="Theme.AppCompat.Light.NoActionBar">

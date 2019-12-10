@@ -1,21 +1,15 @@
 package com.example.proyectoemergentes;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
-import com.example.proyectoemergentes.ui.codigoQR.CodigoQR;
 import com.example.proyectoemergentes.ui.favoritos.FavoritosFragment;
 import com.example.proyectoemergentes.ui.home.HomeFragment;
 import com.example.proyectoemergentes.ui.lugares.LugaresFragment;
@@ -164,23 +158,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        //MenuItem shareItem = menu.findItem(R.id.action_shopping_cart);
-        //shareItem.setVisible(true);
-        inflater.inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if(id==R.id.action_qr_code){
-            Intent intent= new Intent(this, CodigoQR.class);
-            startActivityForResult(intent,0);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 }
