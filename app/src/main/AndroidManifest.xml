@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ShoppingActivity"></activity>
+        <activity android:name=".PaymentDetailActivity"></activity>
+        <activity android:name=".ShoppingActivity" />
         <activity
             android:name=".ui.PaqueteActivity"
             android:theme="@style/CustomActionBar" />
@@ -43,10 +44,10 @@
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_main2"
-            android:theme="@style/SplashTheme"></activity>
+            android:theme="@style/SplashTheme" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main2"></activity>
+            android:label="@string/title_activity_main2" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

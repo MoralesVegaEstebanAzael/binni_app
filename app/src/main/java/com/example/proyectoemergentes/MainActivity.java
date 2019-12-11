@@ -8,9 +8,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.proyectoemergentes.dataBase.DataBaseHandler;
@@ -29,6 +32,7 @@ import devlight.io.library.ntb.NavigationTabBar;
 public class MainActivity extends AppCompatActivity {
     public static DataBaseHandler dataBaseHandler;
     NavigationTabBar navigationTabBar;
+    private TextView textCartItemCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,22 +167,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
 
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
-        if(id==R.id.action_qr_code){
+        Intent intent;
+        switch (id){
+            case R.id.action_shopping_cart:
+                //Toast.makeText(this,"Carrito",Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, ShoppingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_qr_code:
+               intent= new Intent(this, CodigoQR.class);
+                startActivityForResult(intent,0);
+                break;
+        }
+       /* if(id==R.id.action_qr_code){
             Intent intent= new Intent(this, CodigoQR.class);
             startActivityForResult(intent,0);
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        //getMenuInflater().inflate(R.menu.toolbar_menu_paquete, menu);
+
+        final MenuItem menuItem = menu.findItem(R.id.action_shopping_cart);
+        View actionView= MenuItemCompat.getActionView(menuItem);
+        textCartItemCount = actionView.findViewById(R.id.cart_badge_red);
+        int count = dataBaseHandler.getCountShoppingCart();
+        textCartItemCount.setText(count+"");
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
+        return true;
+    }
+
+
 
 }

@@ -34,6 +34,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_IMAGEN);
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_USUARIO);
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_ANUNCIO);
+
+
         sqLiteDatabase.execSQL(Constantes.CREATE_TABLE_SHOPPING_CART);
     }
 
@@ -52,14 +54,31 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         database.execSQL(query);
     }
 
-    public void addShoppingCart(String paquete){
+    public void addShoppingCart(String id,String nombre,String fecha,String npersonas,String precio ){
+        /*
+        "CREATE TABLE IF NOT EXISTS shopping_cart(idpaquete STRING,nombrepaquete String," +
+            "fecha String,npersonas INT,preciopaquete NUMERIC)";
+
+         */
+        SQLiteDatabase database = getWritableDatabase();
+        String query = "INSERT  INTO shopping_cart VALUES(?, ?, ?,? ,? )";
+        SQLiteStatement statement = database.compileStatement(query);
+        statement.clearBindings();
+        statement.bindString(1,id);
+        statement.bindString(2,nombre);
+        statement.bindString(3,fecha);
+        statement.bindString(4,npersonas);
+        statement.bindString(5,precio);
+        statement.executeInsert();
+
+
         // SQLiteDatabase db = getReadableDatabase();
        // try{
-            database = getWritableDatabase();
+          /*  database = getWritableDatabase();
             String query = String.format("INSERT INTO shopping_cart "+
                     "(idpaquete) " + " VALUES ('%s');",paquete);
             database.execSQL(query);
-        //}catch (Exception e){
+        *///}catch (Exception e){
           //  Log.i("ERRORADD",e.getMessage());
         ///}
     }

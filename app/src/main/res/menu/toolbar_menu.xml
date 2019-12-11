@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_shopping_cart"
+        android:icon="@drawable/ic_shopping_cart_red_24dp"
+        android:visible="true"
+        android:title="Shopping card"
+        app:actionLayout="@layout/custom_action_layout_red"
+        app:showAsAction="always"
+        />
+    <item
         android:id="@+id/action_qr_code"
         android:icon="@drawable/ic_codigo_qr"
         android:visible="true"

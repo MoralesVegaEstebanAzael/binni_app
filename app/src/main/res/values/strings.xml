@@ -35,11 +35,13 @@
     <string name="lugar_precio">Precio</string>
     <string name="lugar_horario">Horario</string>
     <string name="lugar_galeria">Galeria</string>
-
+    <string name="paquete_price">MX$ %1$s</string>
+    <string name="paquete_item_personas">%1$s personas</string>
     <string name="paquete_precio">MX$ %1$s por adulto.</string>
     <string name="paquete_precio_individual">MX$ %1$s por adulto.</string>
     <string name="paquete_personas">%1$s Adultos x %2$s</string>
     <string name="lugar_descripcion">Descripción</string>
+    <string name="url_imagen">http://s3.amazonaws.com/campeche/wp-content/uploads/2019/09/04100139/Screenshot_2.png</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of
         the printing and typesetting industry. Lorem Ipsum has beenlso the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
 
@@ -48,4 +50,9 @@
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
     <string name="fecha_reserva">¿Cuándo te gustaría ir?</string>
+    <string name="accion_comprar">Compra</string>
+    <string name="compras_titulo1">Elementos en tu carrito</string>
+    <string name="compras_total">Total: $ %1$s</string>
+    <string name="compras_items">%1$s producto</string>
+    <string name="title_shopping_activity">Carrito de compras</string>
 </resources>

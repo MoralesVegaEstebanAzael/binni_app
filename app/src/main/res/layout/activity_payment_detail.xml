@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PaymentDetailActivity">
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/logo_pay"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="left"
+        android:src="@drawable/paypallogo" />
+    <RelativeLayout
+        android:background="@color/colorLine"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Detalles de pago"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <RelativeLayout
+
+            android:layout_marginTop="5dp"
+            android:background="@color/colorGray"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:text="PayPal es el procesador de pagos autoizado."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginBottom="20dp"
+            />
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:id="@+id/txtID"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ID"/>
+
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:id="@+id/txtEstatus"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ESTADO"/>
+
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:id="@+id/txtMonto"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="MONTO"/>
+    </LinearLayout>
+
+</LinearLayout>

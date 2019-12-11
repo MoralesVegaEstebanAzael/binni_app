@@ -64,9 +64,7 @@ public class AdapterPaquete extends RecyclerView.Adapter<AdapterPaquete.MyViewHo
                 intent.putExtras(b);
                 */
                 intent.putExtra("PAQUETECLASS", paquete);
-
                 context.startActivity(intent);
-
             }
         });
     }

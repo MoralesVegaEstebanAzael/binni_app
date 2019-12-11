@@ -81,9 +81,10 @@ public class PaquetesFragment extends Fragment {
             public void run() {
                 Paquete paquete;
                 ArrayList<String> lugares=new ArrayList<>();
+                ArrayList<String> urlImagen=new ArrayList<>();
                 String idPaquete="";
                 String idAnterior="";
-                int j=0;
+
                 for (int i=0;i<json.length();i++){
                     JSONObject jsonObject = null;
                     try {
@@ -91,19 +92,22 @@ public class PaquetesFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    lugares.add(jsonObject.optString("id_lugar"));
-
+                    lugares.add(jsonObject.optString("nombre_lugar"));
+                    urlImagen.add(jsonObject.optString("url"));
                     idPaquete =  jsonObject.optString("idpaquete");
+
                     if(!idPaquete.equals(idAnterior)){
                         idPaquete =  jsonObject.optString("idpaquete");
                         paquete = new Paquete(
                                 jsonObject.optString("idpaquete"),
-                                jsonObject.optString("nombre"),
+                                jsonObject.optString("nombre_paquete"),
                                 jsonObject.optString("precio"),
                                 lugares,
+                                urlImagen,
                                 "http://s3.amazonaws.com/campeche/wp-content/uploads/2019/09/04100139/Screenshot_2.png");
                         listPaquetes.add(paquete);
                         lugares.clear();
+                       // urlImagen.clear();
                     }
 
                     idAnterior = idPaquete;

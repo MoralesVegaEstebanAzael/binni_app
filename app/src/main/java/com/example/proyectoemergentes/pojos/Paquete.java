@@ -9,6 +9,8 @@ public class Paquete implements Serializable {
     private String precio;
     private ArrayList<String> lugares;
     private ArrayList<String> urlLugares;
+    private String urlImagen;
+
 
     public ArrayList<String> getUrlLugares() {
         return urlLugares;
@@ -18,12 +20,13 @@ public class Paquete implements Serializable {
         this.urlLugares = urlLugares;
     }
 
-    private String urlImagen;
-    public Paquete(String id, String nombre, String precio, ArrayList<String> lugares, String urlImagen) {
+
+    public Paquete(String id, String nombre, String precio, ArrayList<String> lugares, ArrayList<String> urlLugares, String urlImagen) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.lugares = lugares;
+        this.urlLugares = urlLugares;
         this.urlImagen = urlImagen;
     }
 

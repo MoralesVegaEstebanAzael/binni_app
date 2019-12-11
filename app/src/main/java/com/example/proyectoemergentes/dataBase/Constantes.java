@@ -31,8 +31,12 @@ public class Constantes {
     public static final String CREATE_TABLE_ANUNCIO = "CREATE TABLE IF NOT EXISTS anuncio(" +
             "idanuncio STRING PRIMARY KEY,idsocio STRING,idlugar STRING,fecha_inicio STRING,duracion STRING,idcategoria STRING,nombre_lugar TEXT,imagen BLOB)";
 
-   // public static final String CREATE_TABLE_PAQUETE  = "CREATE TABLE IF NOT EXISTS shopping_cart(idpaquete STRING,STRING)";
-   public static final String PAQUETE_SHOPPING_CART= "lugar";
-    public static final String CREATE_TABLE_SHOPPING_CART = "CREATE TABLE IF NOT EXISTS shopping_cart(idpaquete STRING)";
-    public static final String TABLE_SHOPPING_CART="shopping_cart";
+
+    public static final String CREATE_TABLE_SHOPPING_CART = "CREATE TABLE IF NOT EXISTS shopping_cart(idpaquete STRING,nombrepaquete STRING," +
+            "fecha STRING,npersonas STRING,preciopaquete STRING)";
+
+
+    public  static final String
+            PAYPAL_CLIENT_ID= "Aa17bclvjigT1BuNE1swI5kbDeJ9WTReQmYblCmDO0et1yB17tP9PdwhvKjQPQometJoGEfyufBx3mui";
+
 }

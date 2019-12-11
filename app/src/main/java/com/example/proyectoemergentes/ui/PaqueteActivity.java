@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +31,7 @@ import com.example.proyectoemergentes.dataBase.DataBaseHandler;
 import com.example.proyectoemergentes.pojos.Paquete;
 import com.google.android.material.appbar.AppBarLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -57,6 +57,8 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
     private TextView textCartItemCount;
     private TextView textViewDescripion;
     private DataBaseHandler localDB;
+    private double total;
+    private String fecha;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,10 +102,8 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
 
         String descripcion ="";
         for (String lugar:lugares){
-            ///Cursor cursor = MainActivity.dataBaseHandler.getLugar(lugar);
-            //if(cursor!=null){
                 descripcion+= lugar +"\n";
-            //}
+                Log.i("LUGARDET",lugar);
         }
         textViewDescripion.setText("Recorrido\n " +  descripcion);
         btnAumentar.setOnClickListener(this);
@@ -126,7 +126,10 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                Log.i("DIAA",""+date.getTime().getDay());
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+
+                Log.i("DIAA",""+sdf.format(date.getTime()));
+                fecha = sdf.format(date.getTime());
                 if (relativeLayout.getVisibility() == View.GONE) {
                     expand(relativeLayout, height);
                 } else {
@@ -242,12 +245,13 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
         int id = item.getItemId();
         switch (id){
             case R.id.action_shopping_cart:
-                Toast.makeText(this,"Carrito",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this,"Carrito",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, ShoppingActivity.class);
+
                 startActivity(intent);
                 break;
             case R.id.action_favorite:
-                Toast.makeText(this,"Favorito",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this,"Favorito",Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -339,7 +343,7 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btnReservar:
                 if (relativeLayout2.getVisibility() == View.GONE && contador!=0) {
-                    double total = contador*precioUnitario;
+                    total = contador*precioUnitario;
                     Resources res = getResources();
                     String personas = String.format(res.getString(R.string.paquete_personas),contador+"", paquete.getPrecio());
                     textViewPrecio2.setText(personas);
@@ -350,7 +354,8 @@ public class PaqueteActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
             case R.id.btnAddShopping:
-                localDB.addShoppingCart(paquete.getId());
+                localDB.addShoppingCart(paquete.getId(),paquete.getNombre(),
+                        fecha,contador+"",total+"");
                 int count =localDB.getCountShoppingCart();
                 textCartItemCount.setText(""+count);
                 break;
